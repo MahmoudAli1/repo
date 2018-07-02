@@ -1,0 +1,396 @@
+<style>
+    .form-group label {
+        margin-bottom: 5px;
+        font-weight: 700;
+    }
+
+    .datepicker i {
+        position: relative;
+        top: auto;
+        cursor: pointer;
+    }
+
+    .datepicker .caret {
+        float: right;
+        margin-top: 8px;
+        margin-right: -6px;
+    }
+
+    #filteredBanner {
+        background-color: #C79121;
+        color: #fff;
+        font-size: 12px;
+        font-family: 'Montserrat', sans-serif;
+        text-align: center;
+        width: 100%;
+        height:10px;
+    }
+
+    #filteredBanner span {
+        padding-left: 20px;
+    }
+
+    #filteredBanner #clearButton {
+        float: right;
+        padding-right: 10px;
+    }
+
+    #filteredBanner #clearButton:hover {
+        cursor: pointer;
+        color: #3276B1;
+    }
+
+    #allDataConsideredBanner {
+        background-color: #739E73;
+        color: #fff;
+        font-size: 12px;
+        font-family: 'Montserrat', sans-serif;
+        text-align: center;
+        width: 100%;
+        height:10px;
+    }
+
+    .separatorAtTop {
+        padding-top: 10px;
+        border-top: 1px dashed rgba(0,0,0,.2);
+    }
+</style>
+
+<div id="filteredBanner" name="filteredBanner" ng-show="isFiltered">Filtered| 
+    <span ng-show="filterValuePhoneNumber">Phone# {{filterValuePhoneNumber}}</span>
+    <span ng-show="filterValuePhoneType">PhoneType: {{filterValuePhoneType}}</span>
+    <span ng-show="filterValueAgeFrom && filterValueAgeTo">Age from {{filterValueAgeFrom}} to {{filterValueAgeTo}}</span>
+    <span ng-show="filterValueDistrict">District: {{filterValueDistrict}}</span>
+    <span ng-show="filterValueArea">Area: {{filterValueArea}}</span>
+    <span ng-show="filterValueIsLocationAllowed">Loc. allowed: {{filterValueIsLocationAllowed}}</span>
+    <span ng-show="filterValueInLocation">in location: {{filterValueInLocation}}</span>
+    <span ng-show="filterValueAnonymous">Anonymous: {{filterValueAnonymous}}</span>
+    <span ng-show="filterValueIsNotificationAllowed">Noti. allowed: {{filterValueIsNotificationAllowed}}</span>
+    <span ng-show="filterValueVersionNumber">Version: {{filterValueVersionNumber}}</span>
+    <span ng-show="filterValueBuildNumber">Build: {{filterValueBuildNumber}}</span>
+    <span ng-show="filterValueLastInAreaStartDate && filterValueLastInAreaEndDate">Last in area From: {{filterValueLastInAreaStartDate}}  -  To: {{filterValueLastInAreaEndDate}}</span>
+    <span ng-show="filterValueAccountCreationStartDate && filterValueAccountCreationEndDate">Account Created From: {{filterValueAccountCreationStartDate}}  -  To: {{filterValueAccountCreationEndDate}}</span>
+    <span type="button" id="clearButton" ng-click="clearFilters()">Clear</span>
+</div>
+
+<div id="allDataConsideredBanner" name="allDataConsideredBanner" ng-hide="isFiltered">All Customers listed</div>
+
+<div id="content">
+    <div class="row">
+        <big-breadcrumbs items="['Customers', 'Customers List']" icon="file-text-o" class="col-xs-12 col-sm-7 col-md-7 col-lg-4"></big-breadcrumbs>
+        <div smart-include="app/customers/views/customers-data-topRightButton.tpl.html"></div>
+    </div>
+    <!-- Confirmation Modal -->
+    <div id="confirmationModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h5 class="modal-title" id="modal-title">Confirmation Needed</h5>
+                </div>
+                <div class="modal-body" id="modal-body">
+                    <h3>{{message}}</h3>
+                </div>
+                <div class="modal-footer">
+                    <button id="confirmationModal-delete-button" class="btn btn-danger" type="button" style="display: inline-block;">Delete</button>
+                    <button class="btn btn-warning" type="button" style="display: inline-block;" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filters Model: NEED TO BE REFACTORED AS DIRECTIVE -->
+    <!-- Modal -->
+    <div class="modal fade" id="filters-modal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Filter customers</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <!-- Phone Number -->
+                                <label>Phone Number</label>
+                                <input type="text" class="form-control" ng-model="phoneFilter" placeholder="966XXXXXXXXX">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <!-- Distrtict -->
+                                <label>District</label>
+                                <select 
+                                    class="form-control"
+                                    ng-options="district as district.name for district in districtSelect.availableOptions track by district.id"
+                                    ng-model="districtSelect.selectedOption">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Anonymous?</label>
+                                <select
+                                    class="form-control"
+                                    ng-options="option as option.anonymous for option in anonymousSelect.availableOptions track by option.id"
+                                    ng-model="anonymousSelect.selectedOption">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <!-- Age -->
+                                <label>PhoneType</label>
+                                <select 
+                                    class="form-control"
+                                    ng-options="phoneType as phoneType.name for phoneType in phoneTypeSelect.availableOptions track by phoneType.id"
+                                    ng-model="phoneTypeSelect.selectedOption">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <!-- Phone Number -->
+                                <label>Area</label>
+                                <select class="form-control"
+                                        ng-options="area as area.name for area in areaSelect.availableOptions track by area.id"
+                                        ng-model="areaSelect.selectedOption">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Notification allowed?</label>
+                                <select
+                                    class="form-control"
+                                    ng-options="notification as notification.notificationAllowed for notification in notificationAllowedSelect.availableOptions track by notification.id"
+                                    ng-model="notificationAllowedSelect.selectedOption">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <!-- Age -->
+                                <label>From Age</label>
+                                <input type="text" class="form-control" ng-model="ageFromFilter" placeholder="e.g. 20">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <!-- Age -->
+                                <label>To Age</label>
+                                <input type="text" class="form-control" ng-model="ageToFilter" placeholder="e.g. 35">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Location Allowed</label>
+                                <select
+                                    class="form-control"
+                                    ng-options="location as location.isLocationAllowed for location in isLocationAllowedSelect.availableOptions track by location.id"
+                                    ng-model="isLocationAllowedSelect.selectedOption">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Version Number</label>
+                                <input type="text" class="form-control" ng-model="versionNumberFilter" placeholder="e.g. 1.0.5">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 col-md-offset-4">
+                            <div class="form-group">
+                                <!-- Age -->
+                                <label>In Location?</label>
+                                <select
+                                    class="form-control"
+                                    ng-options="location as location.inLocation for location in inLocationSelect.availableOptions track by location.id"
+                                    ng-model="inLocationSelect.selectedOption">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Build Number</label>
+                                <input type="text" class="form-control" ng-model="buildNumberFilter" placeholder="e.g. 1">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row separatorAtTop">
+                        <div class="col-md-8 col-md-offset-2">
+                            <div class="form-group">
+                                <label>Last in area</label>
+                                <div id="datepicker_lastInArea" class="form-control datepicker">
+                                    <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+                                    <span></span> <b class="caret"></b>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2">
+                            <div class="form-group">
+                                <label>Account creation date</label>
+                                <div id="datepicker_creationDate" class="form-control datepicker">
+                                    <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+                                    <span></span> <b class="caret"></b>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" ng-click="filterCustomers()" data-dismiss="modal">Submit</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- widget grid -->
+    <section widget-grid id="widget-grid">
+        <!-- row -->
+        <div class="row">
+            <!-- NEW WIDGET START -->
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <!-- Widget ID (each widget will need unique ID)-->
+                <div id="customers-list-widget" 
+                        data-widget-sortable 
+                        data-jarvis-widget 
+                        data-widget-deletebutton 
+                        data-widget-colorbutton 
+                        data-widget-editbutton 
+                        data-widget-togglebutton 
+                        data-widget-fullscreenbutton>
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                        <h2>Customers</h2>
+                    </header>
+                    <!-- widget div-->
+                    <div>
+                        <!-- widget content -->
+                        <div class="widget-body no-padding">
+
+                            <table id="table" datatable-basic data-table-options="tableOptions" bind-filters="true"
+                                   class="display projects-table table table-striped table-bordered table-hover"
+                                   cellspacing="0" width="100%">
+                                <thead>
+                                <tr>
+                                    <th class="hasinput" style="width:3%">
+                                    </th>
+                                    <th class="hasinput">
+                                        <input type="text" class="form-control" placeholder="Customer Name Filter" />
+                                    </th>
+                                    <th class="hasinput" style="width:10%">
+                                        <input type="text" class="form-control" placeholder="PhoneType Filter" />
+                                    </th>
+                                    <th class="hasinput" style="width:3%">
+                                        <input type="text" class="form-control" placeholder="District Filter" />
+                                    </th>
+                                    <th class="hasinput" style="width:9%">
+                                        <input type="text" class="form-control" placeholder="Area Filter" />
+                                    </th>
+                                    <th class="hasinput" style="width:9%">
+                                        <input type="text" class="form-control" placeholder="#Orders Filter" />
+                                    </th>
+                                    <th class="hasinput" style="width:9%">
+                                        <input type="text" class="form-control" placeholder="#Sellings Filter" />
+                                    </th>
+                                    <th class="hasinput" style="width:10%">
+                                        <input type="text" class="form-control" placeholder="Is In Area?" />
+                                    </th>
+                                    <th class="hasinput" style="width:14%">
+                                        <input type="text" class="form-control" placeholder="Last in area update time" />
+                                    </th>
+                                    <th class="hasinput" style="width:14%">
+                                        <input type="text" class="form-control" placeholder="Created Date" />
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <th data-class="expand">name</th>
+                                    <th>PhoneType</th>
+                                    <th data-hide="phone, tablet">District</th>
+                                    <th data-hide="phone, tablet">Area</th>
+                                    <th data-hide="phone,tablet">Orders</th>
+                                    <th data-hide="phone,tablet">Sellings</th>
+                                    <th data-hide="phone, tablet">Is in area?</th>
+                                    <th data-hide="phone, tablet">Last in area</th>
+                                    <th data-hide="phone, tablet">Created</th>
+                                </tr>
+                                </thead>
+                                <caption class="smart-datatable-child-format" data-child-control="td.details-control">
+                                    <table cellpadding="5" cellspacing="0" border="0"
+                                           class="table table-hover table-condensed">
+                                        <tr>
+                                            <td style="width:134px">Customer Phone:</td>
+                                            <td ng-bind-html="d.PhoneNumber"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Age:</td>
+                                            <td>{{d.Age ? d.Age : 'not set'}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Location Allowed:</td>
+                                            <td>{{d.IsLocationAllowed ? 'Yes' : 'No'}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Notifications Allowed:</td>
+                                            <td>{{d.IsNotificationsAllowed ? 'Yes' : 'No'}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Build Number:</td>
+                                            <td>{{d.BuildNumber ? d.BuildNumber : 'not set'}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Version Number:</td>
+                                            <td>{{d.VersionNumber ? d.VersionNumber : 'not set'}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Gender:</td>
+                                            <td>{{d.Gender ? d.Gender : 'not set'}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <a class="btn btn-info ordersHistory" customer-id="{{d.ID}}">
+                                                    <i class="glyphicon glyphicon-list-alt"></i> Orders History
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <div class="row">
+                                                    <a class="btn btn-success deliveryAddress" delivery-address="{{d.Coordinates}}">
+                                                        <i class="fa fa-lg fa-fw fa-truck"></i> Delivery Address
+                                                    </a>
+                                                    <a class="btn btn-danger deleteCustomer" customer-id="{{d.ID}}">
+                                                        <i class="glyphicon glyphicon-trash"></i> Delete Customer
+                                                    </a>  
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </caption>
+                            </table>
+                        </div>
+                        <!-- end widget content -->
+                    </div>
+                    <!-- end widget div -->
+                </div>
+                <!-- end widget -->
+            </article>
+            <!-- WIDGET END -->
+        </div>
+        <!-- end row -->
+    </section>
+    <!-- end widget grid -->
+</div>

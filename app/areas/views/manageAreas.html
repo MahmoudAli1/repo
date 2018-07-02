@@ -1,0 +1,101 @@
+
+<style>
+	button.btn {
+	    display: block;
+	    margin: auto;
+	}
+</style>
+<div id="content">
+	<div class="row">
+		<big-breadcrumbs items="['Areas', 'Manage Areas']" icon="plus-square-o" class="col-xs-12 col-sm-7 col-md-7 col-lg-4"></big-breadcrumbs>
+	</div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmationModal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h5 class="modal-title" id="modal-title">Confirmation Needed</h5>
+        </div>
+        <div class="modal-body" id="modal-body">
+            <h3>{{message}}</h3>
+        </div>
+        <div class="modal-footer">
+            <button id="confirmationModal-ok-button" class="btn btn-primary" type="button" style="display: inline-block;">OK</button>
+            <button class="btn btn-warning" type="button" style="display: inline-block;" data-dismiss="modal">Cancel</button>
+        </div>
+        </div>
+
+      </div>
+    </div>
+
+	<!-- widget grid -->
+    <section widget-grid id="manage-area-widget-grid">
+        <!-- row -->
+        <div class="row">
+            <!-- NEW WIDGET START -->
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <!-- Widget ID (each widget will need unique ID)-->
+                <div id="manage-areas-widget" 
+                data-widget-sortable 
+						data-jarvis-widget 
+						data-widget-deletebutton 
+						data-widget-colorbutton 
+						data-widget-editbutton 
+						data-widget-togglebutton 
+						data-widget-fullscreenbutton>
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+
+                        <h2>All Areas</h2>
+                    </header>
+                    <!-- widget div-->
+                    <div>
+                        <!-- widget content -->
+                        <div class="widget-body no-padding">
+
+                            <table datatable-basic data-table-options="tableOptions" bind-filters="true"
+                                   class="display projects-table table table-striped table-bordered table-hover"
+                                   cellspacing="0" width="100%">
+                                <thead>
+                                <tr>
+                                    <th class="hasinput">
+                                        <input type="text" class="form-control" placeholder="Area Name Filter" />
+                                    </th>
+                                    <th class="hasinput" style="width:10%">
+                                        <input type="text" class="form-control" placeholder="# of Users Filter" />
+                                    </th>
+                                    <th class="hasinput" style="width:9%"></th>
+                                    <th class="hasinput" style="width:8%; text-align: center;"></th>
+                                    <th class="hasinput" style="width:5%"></th>
+                                    <th class="hasinput" style="width:6%"></th>
+                                    <th class="hasinput" style="width:6%"></th>
+                                </tr>
+                                <tr>
+                                    <th data-class="expand">Area Name</th>
+                                    <th data-hide="phone, tablet">Number of Users</th>
+                                    <th data-hide="phone,tablet"></th>
+                                    <th data-hide="phone,tablet"></th>
+                                    <th data-hide="phone, tablet"></th>
+                                    <th data-hide="phone, tablet"></th>
+                                    <th data-hide="phone, tablet"></th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <!-- end widget content -->
+                    </div>
+                    <!-- end widget div -->
+                </div>
+                <!-- end widget -->
+            </article>
+            <!-- WIDGET END -->
+        </div>
+        <!-- end row -->
+    </section>
+    <!-- end widget grid -->
+</div>
+	

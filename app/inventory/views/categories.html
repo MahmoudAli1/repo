@@ -1,0 +1,98 @@
+<style>
+	.product-info .row {
+		margin-bottom: 10px;
+	}
+	.product-info .row button {
+		width: 100%;
+	}
+	.product-content .product-image {
+	    min-height: 174px;
+	}
+	.img-responsive {
+		max-width: 100% !important;
+		max-height: 174px !important;
+		margin: auto;
+	}
+	.name {
+		font-family: 'Montserrat', sans-serif;
+		color:#5b5b5b;
+	}
+	.inventoryStat {
+		font-family: 'Montserrat', sans-serif;
+		color:#5b5b5b;
+	}
+	.product-content .product-deatil {
+	    padding-bottom: 0px;
+	}
+	.lastItem {
+		margin-bottom: 50px;
+	}
+	#backButtonContainer {
+		margin: 0px 0px 13px 13px;
+	}
+</style>
+<div id="content">
+<div class="row">
+    <big-breadcrumbs items="['Inventory', 'Categories']" icon="th" class="col-xs-12 col-sm-7 col-md-7 col-lg-4"></big-breadcrumbs>
+</div>
+	<!-- Confirmation Modal -->
+    <div id="confirmationModal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h5 class="modal-title" id="modal-title">Confirmation Needed</h5>
+        </div>
+        <div class="modal-body" id="modal-body">
+            <h3>{{message}}</h3>
+        </div>
+        <div class="modal-footer">
+            <button id="confirmationModal-delete-button" class="btn btn-danger" type="button" style="display: inline-block;">Delete</button>
+            <button class="btn btn-warning" type="button" style="display: inline-block;" data-dismiss="modal">Cancel</button>
+        </div>
+        </div>
+      </div>
+    </div>
+    <!-- content -->
+    <div ng-repeat="category in categories" class="col-sm-6 col-md-6 col-lg-6" ng-class="{'lastItem':$last}">
+    	<div class="product-content product-wrap clearfix">
+            <div class="row">
+                <div class="col-md-5 col-sm-12 col-xs-12">
+                    <div class="product-image">
+                        <img ng-src="{{category.Image}}" alt="Image not available" class="img-responsive">
+                    </div>
+                </div>
+                <div class="col-md-7 col-sm-12 col-xs-12">
+                    <div class="product-deatil">
+                        <h5 class="name">
+                            <a href="#">
+                                {{category.EnglishName}} <span>{{category.EnglishDescription}}</span>
+                            </a>
+                        </h5>
+                        <span class="tag1"></span>
+                    </div>
+                    <div class="description">
+                        <p class="inventoryStat">
+                        	Number of Subcategories: <span>{{category.Subcategories.length}}</span>
+                        </p>
+                    </div>
+                    <div class="product-info">
+                        <div class="row">
+                        	<div class="col-md-4">
+                        		<button class="btn btn-primary" ng-click="openCategory(category.ID)">Open</button>
+                        	</div>
+                        	<div class="col-md-4">
+                        		<button class="btn btn-warning" ng-click="editCategory(category.ID)">Edit</button>
+                        	</div>
+                        	<div class="col-md-4">
+                        		<button class="btn btn-danger" ng-click="openWindowForDeleteCategory(category.ID)">Delete</button>
+                        	</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+	

@@ -1,0 +1,31 @@
+<style>
+    .modal {
+      text-align: center;
+    }
+
+    @media screen and (min-width: 768px) { 
+      .modal:before {
+        display: inline-block;
+        vertical-align: middle;
+        content: " ";
+        height: 100%;
+      }
+    }
+
+    .modal-dialog {
+      display: inline-block;
+      text-align: left;
+      vertical-align: middle;
+    }
+</style>
+<div class="modal-header">
+    <button type="button" class="close" ng-click="close()">&times;</button>
+    <h5 class="modal-title" id="modal-title">Confirmation Needed</h5>
+</div>
+<div class="modal-body" id="modal-body">
+    <h3>{{message}}</h3>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" style="display: inline-block;" ng-click="confirm()">OK</button>
+    <button class="btn btn-warning" type="button" style="display: inline-block;" ng-click="close()">Cancel</button>
+</div>

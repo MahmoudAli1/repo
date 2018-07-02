@@ -1,0 +1,21 @@
+<div  ng-attr-id="{{'collapse' + orderId}}" class="panel-collapse collapse">
+	<ul class="list-group">
+		<li class="list-group-item" ng-repeat="item in items">
+			<div class="row">
+				<div class="col-md-3">
+					Product: {{item.TripItem.Item.EnglishName}}
+				</div>
+				<div class="col-md-3">
+					Brand: {{item.TripItem.Item.Category.EnglishName}}
+				</div>
+				<div class="col-md-3">
+					Quantity: {{item.Quantity}}
+				</div>
+				<div class="col-md-3">
+					Price: {{item.Price | currency:"SAR ":0}}
+				</div>
+			</div>
+		</li>
+	</ul>
+	<div class="panel-footer">{{items.length}}  item(s)</div>
+</div>

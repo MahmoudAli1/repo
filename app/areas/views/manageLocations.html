@@ -1,0 +1,131 @@
+<style>
+	.dd {
+		max-width: 100%;
+	}
+
+	.area-buttons-container {
+	    text-align: right;
+	}
+
+	.district-buttons-container a {
+		display: inline;
+		margin: 0 5px 0 5px;
+	}
+
+	.campaignBtn:hover {
+	    background-color: #4f2751 !important;
+	}
+
+	.area-buttons-container a {
+		display: inline;
+		margin: 0 5px 0 5px;
+	}
+
+	span.font-xs.text-muted {
+		padding-left: 20px;
+	}
+</style>
+
+<div id="content">
+<div class="row">
+    <big-breadcrumbs items="['Areas', 'Manage Locations']" icon="map-marker" class="col-xs-12 col-sm-7 col-md-7 col-lg-4"></big-breadcrumbs>
+</div>
+	<!-- Confirmation Modal -->
+    <div id="confirmationModal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h5 class="modal-title" id="modal-title">Confirmation Needed</h5>
+        </div>
+        <div class="modal-body" id="modal-body">
+            <h3>{{message}}</h3>
+        </div>
+        <div class="modal-footer">
+            <button id="confirmationModal-ok-button" class="btn btn-primary" type="button" style="display: inline-block;">OK</button>
+            <button class="btn btn-warning" type="button" style="display: inline-block;" data-dismiss="modal">Cancel</button>
+        </div>
+        </div>
+
+      </div>
+    </div>
+
+    
+	<!-- NEW WIDGET START -->
+	<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+		<!-- Widget ID (each widget will need unique ID)-->
+		<div id="manage-locations-widget" data-jarvis-widget>
+            <header>
+            	<span class="widget-icon"> <i class="fa fa-map-marker"></i> </span>
+            	<h2>Locations</h2>
+            </header>
+            <!-- widget div-->
+            <div>
+            	<!-- widget content -->
+            	<div class="widget-body no-padding">
+
+            		<div class="col-sm-12 col-md-12 col-lg-12">
+					    <div id="nestable-menu">
+						    <button type="button" class="btn btn-default" ng-click="expandAll()">
+						        Expand All
+						    </button>
+						    <button type="button" class="btn btn-default" ng-click="collapseAll()">
+						        Collapse All
+						    </button>
+                       		<a class="campaignBtn btn bg-color-magenta txt-color-white" ng-click="createDistrict()">Create District</a>
+							<a class="campaignBtn btn bg-color-blue txt-color-white" ng-click="createCity()">Create City</a>
+						</div>
+					    <div class="dd" data-smart-nestable data-group="1" data-output="nestable1DemoOutput">
+					        <ol class="dd-list">
+					        	<li ng-repeat="city in locationsTree" class="dd-item dd-nodrag" data-id="{{city.id}}" on-finish-callback="ngRepeatFinished">
+					        		<div class="dd-handle"><strong>{{city.Name}} City</strong><div class="district-buttons-container air air-top-right padding-7">
+			                                	</div></div>
+					        		<ol class="dd-list">
+		                            	<li ng-repeat="district in city.Districts" class="dd-item dd-nodrag" data-id="{{city.ID}}{{district.ID}}">
+			                            	<div class="dd-handle">
+			                            		<strong style="font-style: italic;">{{district.EnglishName}} District - ({{district.UserCount}} users)</strong>
+			                            		<div class="district-buttons-container air air-top-right padding-7">
+			                                		<a class="campaignBtn btn bg-color-magenta txt-color-white" ng-click="editDistrict(district.ID)">Edit District</a>
+			                                	</div>
+			                            	</div>
+			                            	<ol class="dd-list">
+		                            			<li ng-repeat="area in district.Areas" class="dd-item dd-nodrag" id="{{city.ID}}" data-id="{{city.ID}}{{district.ID}}{{area.ID}}">
+		                            				<div class="dd-handle">
+		                            					<div class="row">
+		                            					<div class="col-md-2">
+		                            					{{area.Name}}
+		                            					</div>
+		                            					<div class="col-md-4">
+		                            					<span class="font-xs text-muted"> {{area.UserCount	}} User(s)</span>
+		                            					<span class="font-xs text-muted">Added Balance: {{area.AddedBalance | currency:"SAR":0}}</span>
+		                            					</div>
+		                            					<div class="area-buttons-container air air-top-right padding-7 col-md-6">
+					                                		<notify-users-buttons></notify-users-buttons>
+					                                		<activation-button></activation-button>
+					                                		<a class="editBtn btn btn-warning" ng-click="areaEdit(area.ID)">Edit</a>
+					                                		<a class="deleteBtn btn btn-danger" ng-click="openWindowForDeleteArea(area.ID, area.Name)">Delete</a>
+					                                	</div>
+					                                	</div>
+		                            				</div>
+		                            			</li>
+		                            		</ol>
+		                            	</li>
+		                            </ol>
+					        	</li>
+					        </ol>
+					    </div>
+					</div>
+            	</div>
+            	<!-- end widget content -->
+            </div>
+            <!-- end widget div -->
+        </div>
+        <!-- end widget -->
+    </article>
+    <!-- WIDGET END -->
+
+
+</div>
+	

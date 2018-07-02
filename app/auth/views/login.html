@@ -1,0 +1,78 @@
+<style>
+    #large-logo {
+        margin-top: 50px;
+    }
+
+    #error {
+        color:red;
+    }
+</style>
+<header id="header"  class="animated fadeInDown" >
+
+    <div id="logo-group">
+        <span id="logo"> <img src="styles/img/caravan/logo.png" alt="SmartAdmin"> </span>
+    </div>
+    
+</header>
+<div id="main" role="main"  class="animated fadeInDown" >
+    <div id="content" class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-8 hidden-xs hidden-sm">
+                <h1 class="txt-color-red login-header-big"></h1>
+
+                <div class="hero">
+                    <img src="styles/img/caravan/caravanLogoWithText.png" class="pull-left display-image" id="large-logo" alt style="">
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-5 col-lg-4">
+                <div class="well no-padding">
+                    <form id="login-form" class="smart-form client-form" ng-submit="receiveToken()" >
+                        <header>
+                            Sign In
+                        </header>
+                        <fieldset>
+                            <div id="error" ng-bind="errorReport">
+                            </div>
+                            <br>
+                             
+                            <section>
+                                <label class="label">E-mail</label>
+                                <label class="input"> <i class="icon-append fa fa-user"></i>
+                                    <input type="email" name="email" ng-model="username"
+                                           data-smart-validate-input
+                                           data-required
+                                           data-email
+                                           data-message-required="Please enter your email address"
+                                           data-message-email="Please enter a VALID email address">
+                                    <b class="tooltip tooltip-top-right"><i class="fa fa-user txt-color-teal"></i>
+                                        Please enter email address/username</b></label>
+                            </section>
+                            <section>
+                                <label class="label">Password</label>
+                                <label class="input"> <i class="icon-append fa fa-lock"></i>
+                                   <input type="password" name="password" ng-model="password"
+                                          data-smart-validate-input
+                                          data-required
+                                          data-minlength="3"
+                                          data-maxnlength="20"
+                                          data-message="Please enter your email password">
+                                    <b class="tooltip tooltip-top-right"><i class="fa fa-lock txt-color-teal"></i> Enter
+                                        your password</b> </label>
+                            </section>
+                            <section>
+                                <label class="checkbox">
+                                    <input type="checkbox" name="remember" id="staySignedIn" checked>
+                                    <i></i>Stay signed in</label>
+                            </section>
+                        </fieldset>
+                        <footer>
+                            <button type="submit" class="btn btn-primary">
+                                Sign in
+                            </button>
+                        </footer>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,99 @@
+<style>
+.subcategoryContainer {
+	display:table;
+    vertical-align:middle;
+    text-align:left;
+    height:100%;
+    width:100%;
+}
+.subcategoryImageContainer {
+	display:table-cell;
+    vertical-align:middle;
+    text-align: center;
+    min-height: 200px;
+}
+.subcategoryImage {
+	width:100%;
+	max-width: 200px;
+	max-height: 200px;
+	padding-top: 13%;
+}
+.subcategoryName {
+	font-family: 'Montserrat', sans-serif;
+	font-size: medium;
+	font-weight: bold;
+	letter-spacing: 1px;
+	text-align: center;
+}
+.subcategoryDescription {
+	margin-top: 10px;
+	font-family: 'Montserrat', sans-serif;
+	font-size: small;
+	font-weight: normal;
+	text-align: center;
+}
+.buttonsHorizontalContainer {
+	margin-top: 20px;
+}
+.buttonsHorizontalContainer button {
+	width: 120%; 
+	padding-left: 0px;
+	padding-right: 0px;
+	margin-bottom: 10px;
+}
+</style>
+<div id="content">
+	<div class="row">
+		<big-breadcrumbs items="['Category', 'Subcategories']" icon="home" class="col-xs-12 col-sm-7 col-md-7 col-lg-4"></big-breadcrumbs>
+	</div>
+    <div id="confirmationModal" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h5 class="modal-title" id="modal-title">Confirmation Needed</h5>
+				</div>
+				<div class="modal-body" id="modal-body">
+					<h3>{{message}}</h3>
+				</div>
+				<div class="modal-footer">
+					<button id="confirmationModal-delete-button" class="btn btn-danger" type="button" style="display: inline-block;">Delete</button>
+					<button class="btn btn-warning" type="button" style="display: inline-block;" data-dismiss="modal">Cancel</button>
+				</div>
+			</div>
+		</div>
+    </div>
+    <div class="row">
+    	<div ng-repeat="subcategory in subcategories" class="col-lg-3">
+    		<div class="well well-sm subcategoryContainer">
+    			<div class="hidden-xs col-sm-4 col-md-4 col-lg-12 subcategoryImageContainer">
+    				<img class="subcategoryImage" ng-src="{{subcategory.Image}}">
+    			</div>
+				<div class="col-xs-12 col-sm-8 col-md-8 col-lg-12">
+    				<div class="subcategoryName">
+	    				<span>{{subcategory.EnglishName}}</span>
+	    			</div>
+				</div>
+    			<div class="col-xs-12 col-sm-8 col-md-8 col-lg-12">
+	    			<div class="subcategoryDescription">
+	    				<span>{{subcategory.EnglishDescription}}</span>
+	    			</div>
+    			</div>
+    			<div class="col-xs-12 col-sm-8 col-md-8 col-lg-12 buttonsHorizontalContainer no-padding">
+    				<div class="col-lg-3">
+    					<button class="btn btn-primary" ng-click="openSubcategory(subcategory.ID)">Open</button>
+    				</div>
+    				<div class="col-lg-3">
+    					<button class="btn btn-warning" ng-click="editSubcategory(subcategory.ID)">Edit</button>
+    				</div>
+    				<div class="col-lg-3">
+    					<button class="btn btn-danger" ng-click="openWindowForDeleteSubcategory(subcategory.ID)">Delete</button>
+					</div>
+					<div class="col-lg-3">
+    					<button class="btn btn-success" ng-click="openBranches(subcategory.ID)">Branches</button>
+    				</div>
+    			</div>
+    		</div>
+    	</div>
+    </div>
+</div>

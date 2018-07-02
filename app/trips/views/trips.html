@@ -1,0 +1,53 @@
+<div id="content">
+    <div class="row">
+        <big-breadcrumbs items="['Trips', 'All Trips']" icon="shopping-cart" class="col-xs-12 col-sm-7 col-md-7 col-lg-4"></big-breadcrumbs>
+    </div>
+    <div id="confirmationModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h5 class="modal-title" id="modal-title">Confirmation Needed</h5>
+                </div>
+                <div class="modal-body" id="modal-body">
+                    <h3>{{message}}</h3>
+                </div>
+                <div class="modal-footer">
+                    <button id="confirmationModal-delete-button" class="btn btn-danger" type="button" style="display: inline-block;">Delete</button>
+                    <button class="btn btn-warning" type="button" style="display: inline-block;" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section widget-grid id="cars-list-widget-grid">
+        <div class="row">
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="well" id="cars-list-widget" data-jarvis-widget>
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                        <h2>Cars</h2>
+                    </header>
+                    <div>
+                        <div class="widget-body no-padding">
+                            <table datatable-basic data-table-options="tableOptions"
+                                class="display projects-table table table-striped table-bordered table-hover"
+                                cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>Driver Name</th>
+                                        <th>Car Name</th>
+                                        <th>Created At</th>
+                                        <th>Started At</th>
+                                        <th>Ended At</th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+</div>

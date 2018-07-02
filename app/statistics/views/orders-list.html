@@ -1,0 +1,418 @@
+<style>
+    .form-group label {
+        display: inline-block;
+        max-width: 100%;
+        margin-bottom: 5px;
+        font-weight: 700;
+    }
+
+    #datepicker i {
+        position: relative;
+        top: auto;
+        cursor: pointer;
+    }
+
+    #datepicker .caret {
+        float: right;
+        margin-top: 8px;
+        margin-right: -6px;
+    }
+
+    .timePicker {
+        padding-top: 10px;
+        border-top: 1px dashed rgba(0,0,0,.2);
+    }
+
+    .timePicker .form-control {
+        padding: 6px 3px;
+    }
+
+    .noLeftPadding {
+        padding-left: 0px;
+    }
+
+    #filteredBanner {
+        background-color: #C79121;
+        color: #fff;
+        font-size: 12px;
+        font-family: 'Montserrat', sans-serif;
+        text-align: center;
+        width: 100%;
+        height:10px;
+    }
+
+    #filteredBanner span {
+        padding-left: 20px;
+    }
+
+    #filteredBanner #clearButton {
+        float: right;
+        padding-right: 10px;
+    }
+
+    #filteredBanner #clearButton:hover {
+        cursor: pointer;
+        color: #3276B1;
+    }
+
+    .input-help{
+        display: none
+    }
+    /* Help should show when invalid */
+    .ng-invalid + .input-help {
+        display: block;
+    }
+</style>
+<!-- DataTables moment -->
+<script src="bower_components/datatables-plugins/sorting/datetime-moment.js"></script>
+
+<div id="filteredBanner" name="filteredBanner" ng-show="isFiltered">Filtered| 
+    <span ng-show="filterValueStartDate && filterValueEndDate">From: {{filterValueStartDate}} {{filterValueStartTime}}  -  To: {{filterValueEndDate}} {{filterValueEndTime}}</span>
+    <span ng-show="filterValueCustomerName">Customer Name: {{filterValueCustomerName}}</span>
+    <span ng-show="filterValueArea">Area: {{filterValueArea}}</span>
+    <span ng-show="filterValueStatus">Status: {{filterValueStatus}}</span>
+    <span ng-show="filterValueMinimumTimeToArrive && filterValueMaximumTimeToArrive">Time to arrive: {{filterValueMinimumTimeToArrive}} -> {{filterValueMaximumTimeToArrive}}</span>
+    <span ng-show="filterValueMinimumTotalDeliveryTime && filterValueMaximumTotalDeliveryTime">Total Delivery Time: {{filterValueMinimumTotalDeliveryTime}} -> {{filterValueMaximumTotalDeliveryTime}}</span>
+    <span type="button" id="clearButton" ng-click="clearFilters()">Clear</span>
+</div>
+
+<div id="content">
+    <div class="row">
+        <big-breadcrumbs items="['Orders', 'Orders List']" icon="file-text-o" class="col-xs-12 col-sm-7 col-md-7 col-lg-4"></big-breadcrumbs>
+        <div smart-include="app/statistics/views/order-data-topRightButtons.tpl.html"></div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="filters-modal" role="dialog">
+        <div class="modal-dialog">
+
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Filtering Orders</h4>
+            </div>
+            <div class="modal-body">
+              <form name="filterForm">
+                <div class="row">
+                    <div class="col-md-2">
+                        <!-- Empty Col -->
+                    </div>
+                    <div class="col-md-8">
+                        <!-- Date Picker -->
+                        <div class="form-group">
+                            <label>Date Range</label>
+                            <div id="datepicker" class="form-control">
+                                <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+                                <span></span> <b class="caret"></b>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <!-- Categoy -->
+                            <label>Customer Name</label>
+                            <input  class="form-control"
+                                    type="text"
+                                    ng-model="customerName">
+                        </div>
+                           <div class="form-group">
+                            <!-- Categoy -->
+                            <label>Phone Type</label>
+                            <input  class="form-control"
+                                    type="text"
+                                    ng-model="phoneType">
+                        </div>
+                        <div class="form-group">
+                            <!-- Brand -->
+                            <label>Area</label>
+                            <select class="form-control"
+                                    ng-options="area as area.name for area in areaSelect.availableOptions track by area.id"
+                                    ng-model="areaSelect.selectedOption">
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <!-- Product -->
+                            <label>Status</label>
+                            <select class="form-control"
+                                    ng-options="status.name for status in statusSelect.availableOptions track by status.id"
+                                    ng-model="statusSelect.selectedOption">
+                            </select>
+                        </div>
+
+                        <div class="row form-group timePicker">
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Min Time to Arrive</label>
+                                    <div class="col-md-6 noLeftPadding">
+                                        <input 
+                                            class="form-control"
+                                            type= 'number'
+                                            placeholder="minutes" 
+                                            ng-model="minimumMinutesToArrive"
+                                            min= 0
+                                            ng-max= 'maximumMinutesToArrive'>
+                                            <div class="input-help">
+                                                <span class="txt-color-red">must be at most {{maximumMinutesToArrive}}</span>
+                                            </div>
+                                    </div>
+                                    <div class="col-md-6 noLeftPadding">
+                                        <input 
+                                            class="form-control"
+                                            type= 'number'
+                                            placeholder="seconds" 
+                                            ng-model="minimumSecondsToArrive"
+                                            min= 0
+                                            max= 60>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Max Time to Arrive</label>
+                                    <div class="col-md-6 noLeftPadding">
+                                        <input 
+                                            class="form-control"
+                                            type= 'number'
+                                            placeholder="minutes" 
+                                            ng-model="maximumMinutesToArrive"
+                                            ng-min= 'minimumMinutesToArrive'>
+                                            <div class="input-help">
+                                                <span class="txt-color-red">must be at least {{minimumMinutesToArrive}}</span>
+                                            </div>
+                                    </div>
+                                    <div class="col-md-6 noLeftPadding">
+                                        <input 
+                                            class="form-control"
+                                            type= 'number'
+                                            placeholder="seconds" 
+                                            ng-model="maximumSecondsToArrive"
+                                            min= 0
+                                            max= 60>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row form-group timePicker">
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Min Total Delivery Time</label>
+                                    <div class="col-md-6 noLeftPadding">
+                                        <input 
+                                            class="form-control"
+                                            type= 'number'
+                                            placeholder="minutes" 
+                                            ng-model="minimumMinutesDeliveryTime"
+                                            min= 0
+                                            ng-max= 'maximumMinutesDeliveryTime'>
+                                            <div class="input-help">
+                                                <span class="txt-color-red">must be at most {{maximumMinutesDeliveryTime}}</span>
+                                            </div>
+                                    </div>
+                                    <div class="col-md-6 noLeftPadding">
+                                        <input 
+                                            class="form-control"
+                                            type= 'number'
+                                            placeholder="seconds" 
+                                            ng-model="minimumSecondsDeliveryTime"
+                                            min= 0
+                                            max= 60>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Max Total Delivery Time</label>
+                                    <div class="col-md-6 noLeftPadding">
+                                        <input 
+                                            class="form-control"
+                                            type= 'number'
+                                            placeholder="minutes" 
+                                            ng-model="maximumMinutesDeliveryTime"
+                                            min= 0
+                                            ng-min= 'minimumMinutesDeliveryTime'>
+                                            <div class="input-help">
+                                                <span class="txt-color-red">must be at least {{minimumMinutesDeliveryTime}}</span>
+                                            </div>
+                                    </div>
+                                    <div class="col-md-6 noLeftPadding">
+                                        <input 
+                                            class="form-control"
+                                            type= 'number'
+                                            placeholder="seconds" 
+                                            ng-model="maximumSecondsDeliveryTime"
+                                            min= 0
+                                            max= 60>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+
+                    </div>
+                    <div class="col-md-2">
+                        <!-- Empty Col -->
+                    </div>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" ng-click="filterOrders()" data-dismiss="modal">Submit</button>
+            </div>
+          </div>
+          
+        </div>
+    </div>
+
+    <!-- widget grid -->
+    <section widget-grid id="widget-grid">
+        <!-- row -->
+        <div class="row">
+            <!-- NEW WIDGET START -->
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <!-- Widget ID (each widget will need unique ID)-->
+                <div id="orders-list-widget" 
+                        data-widget-sortable 
+                        data-jarvis-widget 
+                        data-widget-deletebutton 
+                        data-widget-colorbutton 
+                        data-widget-editbutton 
+                        data-widget-togglebutton 
+                        data-widget-fullscreenbutton>
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+
+                        <h2>All Orders</h2>
+                    </header>
+                    <!-- widget div-->
+                    <div>
+                        <!-- widget content -->
+                        <div class="widget-body no-padding">
+
+                            <table datatable-basic data-table-options="tableOptions" bind-filters="true" id="table"
+                                   class="display projects-table table table-striped table-bordered table-hover"
+                                   cellspacing="0" width="100%">
+                                <thead>
+                                <tr>
+                                    <th class="hasinput" style="width:3%">
+                                    </th>
+                                    <th class="hasinput icon-addon">
+                                        <input id="dateselect_filter" type="text" placeholder="Date Filter" class="form-control datepicker" data-dateformat="yy/mm/dd">
+                                        <label for="dateselect_filter" class="glyphicon glyphicon-calendar no-margin padding-top-15" rel="tooltip" title="" data-original-title="Purchase Date"></label>
+                                    </th>
+                                    <th class="hasinput">
+                                        <input type="text" class="form-control" placeholder="Customer Name Filter" />
+                                    </th>
+                                    <th class="hasinput" style="width:8%">
+                                        <input type="text" class="form-control" placeholder="Phone Type Filter" />
+                                    </th> 
+                                    <th class="hasinput" style="width:12%">
+                                        <input type="text" class="form-control" placeholder="Area Filter" />
+                                    </th>
+                                    <th class="hasinput" style="width:10%">
+                                        <input type="text" class="form-control" placeholder="Paid Price Filter" />
+                                    </th>
+                                    <th class="hasinput" style="width:10%">
+                                        <input type="text" class="form-control" placeholder="Status Filter" />
+                                    </th>
+                                    <th class="hasinput" style="width:10%">
+                                        <input type="text" class="form-control" placeholder="Driver Eval. Filter" />
+                                    </th>
+                                    <th class="hasinput" style="width:10%">
+                                        <input type="text" class="form-control" placeholder="Speed Eval. Filter" />
+                                    </th>
+                                    <th class="hasinput" style="width:10%">
+                                        <input type="text" class="form-control" placeholder="Time To Arrival" />
+                                    </th>
+                                    <th class="hasinput" style="width:10%">
+                                        <input type="text" class="form-control" placeholder="Total Delivery Time" />
+                                    </th>
+
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <th data-class="expand">Date</th>
+                                    <th>Customer Name</th>
+                                    <th>Phone Type</th>
+                                    <th data-hide="phone, tablet">Area</th>
+                                    <th data-hide="phone,tablet">Paid Price</th>
+                                    <th data-hide="phone,tablet">Status</th>
+                                    <th data-hide="phone, tablet">Driver Eval.</th>
+                                    <th data-hide="phone, tablet">Speed Eval.</th>
+                                    <th>Time To Arrival</th>
+                                    <th>Total Delivery Time</th>
+                                </tr>
+                                </thead>
+                                <caption class="smart-datatable-child-format" data-child-control="td.details-control">
+                                    <table cellpadding="5" cellspacing="0" border="0"
+                                           class="table table-hover table-condensed table-bordered">
+                                        <tr>
+                                            <td>Driver:</td>
+                                            <td ng-bind-html="d.DriverName"></td>                                            
+                                            <td>Items Price:</td>
+                                            <td ng-bind-html="d.ItemsPrice"></td>
+                                            <td>Order -> Navigation:</td>
+                                            <td><div ng-hide="d.SecondsFromOrderTillNavigated < 60" style="display: inline;">{{(d.SecondsFromOrderTillNavigated/60 | floored) + "m "}}</div>{{(d.SecondsFromOrderTillNavigated%60) + "s"}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Customer Phone:</td>
+                                            <td ng-bind-html="d.CustomerPhoneNumber"></td>
+                                            <td>Balance Used:</td>
+                                            <td ng-bind-html="d.PaidInBalance"></td>
+                                            <td>Arrival -> Delivery:</td>
+                                            <td><div ng-hide="d.SecondsFromArrivalToDelivery < 60" style="display: inline;">{{(d.to_delivered_time/60 | floored) + "m "}}</div>{{(d.to_delivered_time%60) + "s"}}</td>                                      
+                                        </tr>
+                                        <tr>
+                                            <td>Customer Comment:</td>
+                                            <td>{{d.CustomerReview ? d.CustomerReview : "no comment"}}</td>
+                                            
+                                            <td>Delivery Price:</td>
+                                            <td ng-bind-html="d.DeliveryPrice"></td>
+                                            
+                                            <td>Navigation -> Arrival:</td>
+                                            <td><div ng-hide="d.SecondsToArrival < 60" style="display: inline;">{{(d.SecondsToArrival/60 | floored) + "m "}}</div>{{(d.SecondsToArrival%60) + "s"}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Total Price:</td>
+                                            <td ng-bind-html="d.TotalPrice"></td>
+                                            <td>Coupon Deduction:</td>
+                                            <td ng-bind-html="d.PaidInCoupon"></td> 
+                                            <td>Arrival -> Delivery:</td>
+                                            <td><div ng-hide="d.SecondsFromArrivalToDelivery < 60" style="display: inline;">{{(d.SecondsFromArrivalToDelivery/60 | floored) + "m "}}</div>{{(d.SecondsFromArrivalToDelivery%60) + "s"}}</td>   
+                                        </tr>
+                                        <tr class="panel-group">
+                                            <div class="panel panel-default">
+                                                <td>
+                                                    <a data-toggle="collapse" ng-href="{{'#collapse' + d.ID}}" class="btn btn-info items">
+                                                        <i class="glyphicon glyphicon-list"></i> Items
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                   <order-items order-id="d.ID"></order-items> 
+                                                </td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>    
+                                            </div>
+                                        </tr>
+                                    </table>
+                                </caption>
+                            </table>
+                        </div>
+                        <!-- end widget content -->
+                    </div>
+                    <!-- end widget div -->
+                </div>
+                <!-- end widget -->
+            </article>
+            <!-- WIDGET END -->
+        </div>
+        <!-- end row -->
+    </section>
+    <!-- end widget grid -->
+</div>

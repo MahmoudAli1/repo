@@ -1,0 +1,35 @@
+<style>
+    .dropzone {
+        min-height: 250px !important;
+    }
+    .dropzone .dz-preview .dz-image {
+        width: 120px;
+        height: 100%;
+        min-height: 120px;
+        max-height: 170px;
+    }
+    .dropzone .dz-preview .dz-image img {
+        max-width: 120px;
+        max-height: 170px;
+    }
+</style>
+
+<div class="dropzone" data-smart-dropzone="dropzoneConfig">
+    <div class="font-md text-danger" ng-show="photoErrorMessage">{{photoErrorMessage}}</div>
+    <div class="dz-default dz-message">
+        <span>
+            <span class="text-center">
+                <span class="font-lg visible-xs-block visible-sm-block visible-lg-block">
+                    <span class="font-lg">
+                        <i class="fa fa-caret-right text-danger"></i> Drop an image 
+                        <span class="font-xs">to upload</span>
+                    </span>
+                    <span>
+                        &nbsp;&nbsp;
+                        <h4 class="display-inline"> (Or Click)</h4>
+                    </span>
+                </span>
+            </span>
+        </span>
+    </div>
+</div>

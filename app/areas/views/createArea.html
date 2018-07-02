@@ -1,0 +1,123 @@
+<style>
+	#map1 {
+		height: 500px;
+		width: 100%;
+	}
+	#buttonsContainer {
+		text-align: center;
+	}
+	.form-group label {
+		max-width: 100%;
+		margin-bottom: 5px;
+		font-weight: 700;
+	}
+	#formWidgetContent {
+		padding: 13px 13px 0px 13px !important;
+	}
+</style>
+<div class="alert alert-success" ng-show="isAreaCreated">
+	<strong>Success!</strong> New area has been created.
+</div>
+<div id="content">
+	<div class="row">
+		<big-breadcrumbs items="['Areas', 'Create Area']" icon="plus-square-o" class="col-xs-12 col-sm-7 col-md-7 col-lg-4"></big-breadcrumbs>
+	</div>
+	<div class="row">
+		<section widget-grid id="create-area-widget-grid">
+			<div class="row">
+				<div class="col-md-3">
+					<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						<div id="area-info-widget" 
+						data-widget-sortable 
+						data-jarvis-widget 
+						data-widget-deletebutton 
+						data-widget-colorbutton 
+						data-widget-editbutton 
+						data-widget-togglebutton 
+						data-widget-fullscreenbutton>
+							<header>
+								<span class="widget-icon"> <i class="fa fa-info"></i> </span>
+								<h2>Area Information</h2>
+							</header>
+							<div>
+								<div class="widget-body no-padding" id="formWidgetContent">
+									<form ng-submit="createArea()">
+										<div class="form-group" id="areaNameGroup">
+											<label>Area Name</label>
+											<div>
+												<input class="form-control" placeholder="area name" type="text" ng-model="area.name" required="This field is required">
+											</div>
+										</div>
+										<div class="form-group">
+											<label>City</label>
+											<div>
+												<select class="form-control"
+														ng-options="city.Name for city in citySelect.availableOptions track by city.ID"
+														ng-model="citySelect.selectedOption"
+														ng-change="getCityDistricts()">
+												</select>
+											</div>
+										</div>
+										<div class="form-group">
+											<label>District</label>
+											<div>
+												<select class="form-control"
+													ng-disabled="!districtSelect.availableOptions"
+													ng-options="district.EnglishName for district in districtSelect.availableOptions track by district.ID"
+													ng-model="districtSelect.selectedOption">
+												</select>
+											</div>
+										</div>
+										<div class="form-group">
+											<label>Registration Balance</label>
+											<div>
+												<input class="form-control" placeholder="balance" type="number" min="0" ng-model="area.addedBalance" required="This field is required">
+											</div>
+										</div>
+										<div class="row" id="buttonsContainer">
+											<div class="form-group col-md-6">
+												<button type="submit" class="btn btn-success"
+														ng-disabled="
+															!area.name ||
+															citySelect.selectedOption.ID === -1 ||
+															districtSelect.selectedOption.ID === -1 ||
+															!area.addedBalance ||
+															!coordinatesOfPolygons">Create Area</button>
+											</div>
+											<div class="form-group col-md-6">
+												<button type="button" id="deleteShapeButton" class="btn btn-danger" ng-disabled="!selectedShape">Delete Shape</button>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</article>
+		        </div>
+				<div class="col-md-8">
+					<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						<div id="area-map-widget" 
+						data-jarvis-widget 
+						data-widget-sortable 
+						data-widget-deletebutton 
+						data-widget-colorbutton 
+						data-widget-editbutton 
+						data-widget-togglebutton 
+						data-widget-fullscreenbutton>
+							<header>
+								<span class="widget-icon"> <i class="fa fa-map-marker"></i> </span>
+								<h2>Map</h2>
+							</header>
+							<div>
+								<div class="widget-body no-padding">
+									<div id="map1"></div>
+								</div>
+							</div>
+						</div>
+					</article>
+				</div>
+			</div>
+		</section>
+	</div>
+</div>
+	

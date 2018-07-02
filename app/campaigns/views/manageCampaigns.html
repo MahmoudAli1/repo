@@ -1,0 +1,568 @@
+<style>
+
+#campaignsContainer {
+	margin-bottom: 50px;
+}
+
+.activeCampaign {
+    border-left: 15px solid #739e73;
+}
+
+.activeCampaign .campaignStatus {
+	color: #739e73;
+	font-weight: bold;
+}
+
+.scheduledCampaign {
+	border-left: 15px solid #c79121;
+}
+
+.scheduledCampaign .campaignStatus {
+	color: #c79121;
+	font-weight: bold;
+}
+
+.finishedCampaign {
+	border-left: 15px solid #3276b1;
+}
+
+.finishedCampaign .campaignStatus {
+	color: #3276b1;
+	font-weight: bold;
+}
+
+.deactivatedCampaign {
+    border-left: 15px solid #a90329;
+}
+
+.deactivatedCampaign .campaignStatus {
+	color: #a90329;
+	font-weight: bold;
+}
+
+.campaignsTypeInactive {
+	background: #a90329;
+	font-size: large;
+	font-family: 'Montserrat', sans-serif;
+	text-align: center;
+	font-weight: normal;
+	color: #fff;
+}
+
+#campaignHeader {
+	margin-bottom: 10px;
+}
+
+#campaignDistrict {
+	font-size: x-large;
+	font-family: 'Montserrat', sans-serif;
+	text-align: center;
+	font-weight: bold;
+	color: #595959;
+}
+
+#campaignAddedBalance {
+	font-size: medium;
+	font-family: 'Montserrat', sans-serif;
+	text-align: center;
+	font-weight: normal;
+	color: #595959;
+}
+
+.campaignInfo {
+	font-size: small;
+	font-family: 'Montserrat', sans-serif;
+	text-align: center;
+	font-weight: normal;
+	color: #595959;
+}
+
+.campaignInfo .campaignInfoTitle {
+	font-weight: bold;
+}
+
+#campaignsContainer button {
+	width: 50%;
+	float: right;
+	margin: 5px 0 5px 0 !important;
+}
+
+#noCampaignsMessage {
+	font-size: xx-large;
+	font-family: 'Montserrat', sans-serif;
+	text-align: center;
+	font-weight: bold;
+	color: #595959;
+}
+
+#datepicker_campaignsFilter i {
+	position: relative;
+	top: auto;
+	cursor: pointer;
+}
+
+#datepicker_campaignsFilter .caret {
+	float: right;
+	margin-top: 8px;
+	margin-right: -6px;
+}
+
+#filteredBanner {
+	background-color: #C79121;
+	color: #fff;
+	font-size: 12px;
+	font-family: 'Montserrat', sans-serif;
+	text-align: center;
+	width: 100%
+	height:10px;
+}
+
+#filteredBanner span {
+	padding-left: 20px;
+}
+
+#filteredBanner #clearButton {
+	float: right;
+	padding-right: 10px;
+}
+
+#filteredBanner #clearButton:hover {
+	cursor: pointer;
+	color: #3276B1;
+}
+
+.input-help{
+        display: none
+}
+/* Help should show when invalid */
+.ng-invalid + .input-help {
+    display: block;
+}
+
+.campaignMainInfoContainer {
+	border-right: 1px solid rgba(0,0,0,0.2);
+}
+
+.campaignDataTitle {
+	font-size: small;
+	font-family: 'Montserrat', sans-serif;
+	font-style: italic;
+	text-align: left;
+	font-weight: normal;
+	color: #595959;
+}
+
+.campaignDataConatiner .row {
+	margin-bottom: 5px;
+}
+</style>
+
+<div id="filteredBanner" name="filteredBanner" ng-show="isFiltered">Filtered| 
+	<span ng-show="filterValueStartDate && filterValueEndDate">From: {{filterValueStartDate}} -  To: {{filterValueEndDate}}</span>
+	<span ng-show="filterValueCity">City: {{filterValueCity}}</span>
+	<span ng-show="filterValueDistrict">District: {{filterValueDistrict}}</span>
+	<span ng-show="filterValueMinAddedBalance">Min Added Balance: {{filterValueMinAddedBalance | currency:'SAR':0}}</span>
+	<span ng-show="filterValueMaxAddedBalance">Max Added Balance: {{filterValueMaxAddedBalance | currency:'SAR':0}}</span>
+	<span ng-show="filterValueStatus">Status: {{filterValueStatus}}</span>
+	<span type="button" id="clearButton" ng-click="clearFilters()">Clear</span>
+</div>
+
+<div id="content">
+<div class="row">
+    <big-breadcrumbs items="['Campaigns', 'Manage Campaigns']" icon="home" class="col-xs-12 col-sm-7 col-md-7 col-lg-4"></big-breadcrumbs>
+    <div smart-include="app/campaigns/views/campaign-filter-data-topRightButtons.tpl.html"></div>
+</div>
+
+    <!-- content -->
+
+    <!-- Modal -->
+  <div class="modal fade" id="filters-modal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Filter campaigns</h4>
+        </div>
+        <div class="modal-body">
+          <form  name="filterForm">
+          	<div class="row">
+          		<div class="col-md-2">
+          			<!-- Empty Col -->
+          		</div>
+          		<div class="col-md-8">
+          			<!-- Date Picker -->
+          			<div class="form-group">
+                        <label>Date Range</label>
+                        <div id="datepicker_campaignsFilter" class="form-control">
+						    <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+						    <span></span> <b class="caret"></b>
+						</div>
+                    </div>
+          			<div class="form-group">
+                        <label>City</label>
+						<select class="form-control"
+                                ng-options="city.Name for city in citySelect.availableOptions track by city.ID"
+                                ng-model="citySelect.selectedOption"
+                                ng-change="getCityDistricts()">
+                        </select>
+					</div>
+					<div class="form-group">
+						<label>District</label>
+						<select class="form-control"
+	                        ng-disabled="!districtSelect.availableOptions"
+	                        ng-options="district.EnglishName for district in districtSelect.availableOptions track by district.ID"
+	                        ng-model="districtSelect.selectedOption">
+	                	</select>
+		                </select>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Min Balance (SAR)</label>
+								<input class="form-control" placeholder="min balance" type="number" min="0" ng-max="maxAddedBalance" ng-model="minAddedBalance">
+								<div class="input-help">
+	                                <span class="txt-color-red">must be at most {{maxAddedBalance}}</span>
+	                            </div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Max Balance (SAR)</label>
+								<input class="form-control" placeholder="max balance" type="number" min="0" ng-min="minAddedBalance" ng-model="maxAddedBalance">
+								<div class="input-help">
+	                                <span class="txt-color-red">must be at least {{minAddedBalance}}</span>
+	                            </div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label>Status</label>
+						<select class="form-control"
+		                        ng-options="status.name for status in statusSelect.availableOptions track by status.id"
+		                        ng-model="statusSelect.selectedOption"
+		                        name="status">
+		                </select>
+					</div>
+          		</div>
+          		<div class="col-md-2">
+          			<!-- Empty Col -->
+          		</div>
+          	</div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" ng-click="filterCampaigns()" data-dismiss="modal">Submit</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+    <div class="well well-lg col-md-12" ng-show="noCampaignsFetched">
+    	<div id="noCampaignsMessage">No campaigns to display.</div>
+    </div>
+
+    <div id="campaignsContainer" class="col-md-12">
+
+    	<div ng-repeat="campaign in campaigns.active track by $index" class="row well activeCampaign">
+
+    		<div class="col-md-4 campaignMainInfoContainer">
+    			<div id="campaignHeader" class="row">
+    				<div class="col-md-12">
+    					<div class="row">
+    						<div class="col-md-12">
+    							<span class="campaignStatus"><i class="fa fa-circle"></i> Active</span>
+    						</div>
+    					</div>
+	    				<div class="row">
+	    					<div class="col-md-12">
+		    					<span id="campaignDistrict">{{campaign.CityName}} - {{campaign.DistrictName}}</span>
+		    				</div>
+		    			</div>
+		    			<div class="row">
+		    				<div class="col-md-12">
+		    					<span id="campaignAddedBalance">{{campaign.AddedBalance | currency:'SAR':0}} Balance</span>
+		    				</div>
+		    			</div>
+		    		</div>
+    			</div>
+    			<div class="row">
+    				<div class="col-md-12 col-lg-6">
+						<span class="campaignInfo"><span class="campaignInfoTitle">Start Date: </span> {{campaign.StartDate | date:'dd-MM-yyyy'}}</span>
+    				</div>
+    				<div class="col-md-12 col-lg-6">
+						<span class="campaignInfo"><span class="campaignInfoTitle">End Date: </span> {{campaign.EndDate | date:'dd-MM-yyyy'}}</span>
+    				</div>
+    			</div>
+    		</div>
+
+    		<div class="col-md-5 campaignDataConatiner">
+    			<div class="row">
+    				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+    					<span class="campaignDataTitle">Campaign statistics</span>
+    				</div>
+    			</div>
+    			<div class="row">
+    				<div class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
+    					<span class="campaignInfo"><span class="campaignInfoTitle">District's Users: </span> {{campaign.DistrictUserCount}} User(s)</span>
+    				</div>
+    				<div class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
+    					<span class="campaignInfo"><span class="campaignInfoTitle">Potential Balance: </span> {{campaign.PotentialBalance | currency:'SAR':0}}</span>
+    				</div>
+    			</div>
+    			<div class="row">
+    				<div class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
+    					<span class="campaignInfo"><span class="campaignInfoTitle">Referred Users: </span> {{campaign.ReferredCount}} User(s)</span>
+    				</div>
+    				<div class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
+    					<span class="campaignInfo"><span class="campaignInfoTitle">Given Balance: </span> {{campaign.GivenBalance | currency:'SAR':0}}</span>
+    				</div>
+    			</div>
+    			<div class="row">
+    				<div class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
+    					<span class="campaignInfo"><span class="campaignInfoTitle">Referring Users: </span> {{campaign.ReferringCount}} User(s)</span>
+    				</div>
+    			</div>
+    		</div>
+
+    		<div id="buttonsContainer" class="col-xs-12 col-sm-12 col-md-3 col-lg-3 no-padding">
+	    		<div class="row">
+	    			<div class="col-md-12">
+	    				<button class="btn btn-warning" ng-click="editCampaign(campaign.ID)">Edit</button>
+	    			</div>
+	    		</div>
+
+	    		<div class="row">
+	    			<div class="col-md-12">
+	    				<campaign-activation-button></campaign-activation-button>
+	    			</div>
+	    		</div>
+    		</div>
+
+    	</div>
+
+    	<div ng-repeat="campaign in campaigns.scheduled track by $index" class="row well scheduledCampaign">
+
+    		<div class="col-md-4 campaignMainInfoContainer">
+    			<div id="campaignHeader" class="row">
+    				<div class="col-md-12">
+    					<div class="row">
+    						<div class="col-md-12">
+    							<span class="campaignStatus"><i class="fa fa-circle"></i> Scheduled</span>
+    						</div>
+    					</div>
+	    				<div class="row">
+	    					<div class="col-md-12">
+		    					<span id="campaignDistrict">{{campaign.DistrictName}} - {{campaign.DistrictName}}</span>
+		    				</div>
+		    			</div>
+		    			<div class="row">
+		    				<div class="col-md-12">
+		    					<span id="campaignAddedBalance">{{campaign.AddedBalance | currency:'SAR':0}} Balance</span>
+		    				</div>
+		    			</div>
+		    		</div>
+    			</div>
+    			<div class="row">
+    				<div class="col-md-12 col-lg-6">
+						<span class="campaignInfo"><span class="campaignInfoTitle">Start Date: </span> {{campaign.StartDate | date:'dd-MM-yyyy'}}</span>
+    				</div>
+    				<div class="col-md-12 col-lg-6">
+						<span class="campaignInfo"><span class="campaignInfoTitle">End Date: </span> {{campaign.EndDate | date:'dd-MM-yyyy'}}</span>
+    				</div>
+    			</div>
+    		</div>
+
+    		<div class="col-md-5 campaignDataConatiner">
+    			<div class="row">
+    				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+    					<span class="campaignDataTitle">Campaign statistics</span>
+    				</div>
+    			</div>
+    			<div class="row">
+    				<div class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
+    					<span class="campaignInfo"><span class="campaignInfoTitle">District's Users: </span> {{campaign.DistrictUserCount}} User(s)</span>
+    				</div>
+    				<div class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
+    					<span class="campaignInfo"><span class="campaignInfoTitle">Potential Balance: </span> {{campaign.PotentialBalance | currency:'SAR':0}}</span>
+    				</div>
+    			</div>
+    			<div class="row">
+    				<div class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
+    					<span class="campaignInfo"><span class="campaignInfoTitle">Referred Users: </span> {{campaign.ReferredCount}} User(s)</span>
+    				</div>
+    				<div class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
+    					<span class="campaignInfo"><span class="campaignInfoTitle">Given Balance: </span> {{campaign.GivenBalance | currency:'SAR':0}}</span>
+    				</div>
+    			</div>
+    			<div class="row">
+    				<div class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
+    					<span class="campaignInfo"><span class="campaignInfoTitle">Referring Users: </span> {{campaign.ReferringCount}} User(s)</span>
+    				</div>
+    			</div>
+    		</div>
+
+    		<div id="buttonsContainer" class="col-xs-12 col-sm-12 col-md-3 col-lg-3 no-padding">
+	    		<div class="row">
+	    			<div class="col-md-12">
+	    				<button class="btn btn-warning" ng-click="editCampaign(campaign.ID)">Edit</button>
+	    			</div>
+	    		</div>
+
+	    		<div class="row">
+	    			<div class="col-md-12">
+	    				<campaign-activation-button></campaign-activation-button>
+	    			</div>
+	    		</div>
+    		</div>
+
+    	</div>
+
+    	<div ng-repeat="campaign in campaigns.finished track by $index" class="row well finishedCampaign">
+
+    		<div class="col-md-4 campaignMainInfoContainer">
+    			<div id="campaignHeader" class="row">
+    				<div class="col-md-12">
+    					<div class="row">
+    						<div class="col-md-12">
+    							<span class="campaignStatus"><i class="fa fa-circle"></i> Finished</span>
+    						</div>
+    					</div>
+	    				<div class="row">
+	    					<div class="col-md-12">
+		    					<span id="campaignDistrict">{{campaign.CityName}} - {{campaign.DistrictName}}</span>
+		    				</div>
+		    			</div>
+		    			<div class="row">
+		    				<div class="col-md-12">
+		    					<span id="campaignAddedBalance">{{campaign.AddedBalance | currency:'SAR':0}} Balance</span>
+		    				</div>
+		    			</div>
+		    		</div>
+    			</div>
+    			<div class="row">
+    				<div class="col-md-12 col-lg-6">
+						<span class="campaignInfo"><span class="campaignInfoTitle">Start Date: </span> {{campaign.StartDate | date:'dd-MM-yyyy'}}</span>
+    				</div>
+    				<div class="col-md-12 col-lg-6">
+						<span class="campaignInfo"><span class="campaignInfoTitle">End Date: </span> {{campaign.EndDate | date:'dd-MM-yyyy'}}</span>
+    				</div>
+    			</div>
+    		</div>
+
+    		<div class="col-md-5 campaignDataConatiner">
+    			<div class="row">
+    				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+    					<span class="campaignDataTitle">Campaign statistics</span>
+    				</div>
+    			</div>
+    			<div class="row">
+    				<div class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
+    					<span class="campaignInfo"><span class="campaignInfoTitle">District's Users: </span> {{campaign.DistrictUserCount}} User(s)</span>
+    				</div>
+    				<div class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
+    					<span class="campaignInfo"><span class="campaignInfoTitle">Potential Balance: </span> {{campaign.PotentialBalance | currency:'SAR':0}}</span>
+    				</div>
+    			</div>
+    			<div class="row">
+    				<div class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
+    					<span class="campaignInfo"><span class="campaignInfoTitle">Referred Users: </span> {{campaign.ReferredCount}} User(s)</span>
+    				</div>
+    				<div class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
+    					<span class="campaignInfo"><span class="campaignInfoTitle">Given Balance: </span> {{campaign.GivenBalance | currency:'SAR':0}}</span>
+    				</div>
+    			</div>
+    			<div class="row">
+    				<div class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
+    					<span class="campaignInfo"><span class="campaignInfoTitle">Referring Users: </span> {{campaign.ReferringCount}} User(s)</span>
+    				</div>
+    			</div>
+    		</div>
+
+    		<div id="buttonsContainer" class="col-xs-12 col-sm-12 col-md-3 col-lg-3 no-padding">
+	    		<div class="row">
+	    			<div class="col-md-12">
+	    				<campaign-activation-button></campaign-activation-button>
+	    			</div>
+	    		</div>
+    		</div>
+
+    	</div>
+
+    	<div ng-repeat="campaign in campaigns.diactivated track by $index" class="row well deactivatedCampaign">
+
+    		<div class="col-md-4 campaignMainInfoContainer">
+    			<div id="campaignHeader" class="row">
+    				<div class="col-md-12">
+    					<div class="row">
+    						<div class="col-md-12">
+    							<span class="campaignStatus"><i class="fa fa-circle"></i> Deactivated</span>
+    						</div>
+    					</div>
+	    				<div class="row">
+	    					<div class="col-md-12">
+		    					<span id="campaignDistrict">{{campaign.CityName}} - {{campaign.DistrictName}}</span>
+		    				</div>
+		    			</div>
+		    			<div class="row">
+		    				<div class="col-md-12">
+		    					<span id="campaignAddedBalance">{{campaign.AddedBalance | currency:'SAR':0}} Balance</span>
+		    				</div>
+		    			</div>
+		    		</div>
+    			</div>
+    			<div class="row">
+    				<div class="col-md-12 col-lg-6">
+						<span class="campaignInfo"><span class="campaignInfoTitle">Start Date: </span> {{campaign.StartDate | date:'dd-MM-yyyy'}}</span>
+    				</div>
+    				<div class="col-md-12 col-lg-6">
+						<span class="campaignInfo"><span class="campaignInfoTitle">End Date: </span> {{campaign.EndDate | date:'dd-MM-yyyy'}}</span>
+    				</div>
+    			</div>
+    		</div>
+
+    		<div class="col-md-5 campaignDataConatiner">
+    			<div class="row">
+    				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+    					<span class="campaignDataTitle">Campaign statistics</span>
+    				</div>
+    			</div>
+    			<div class="row">
+    				<div class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
+    					<span class="campaignInfo"><span class="campaignInfoTitle">District's Users: </span> {{campaign.DistrictUserCount}} User(s)</span>
+    				</div>
+    				<div class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
+    					<span class="campaignInfo"><span class="campaignInfoTitle">Potential Balance: </span> {{campaign.PotentialBalance | currency:'SAR':0}}</span>
+    				</div>
+    			</div>
+    			<div class="row">
+    				<div class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
+    					<span class="campaignInfo"><span class="campaignInfoTitle">Referred Users: </span> {{campaign.ReferredCount}} User(s)</span>
+    				</div>
+    				<div class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
+    					<span class="campaignInfo"><span class="campaignInfoTitle">Given Balance: </span> {{campaign.GivenBalance | currency:'SAR':0}}</span>
+    				</div>
+    			</div>
+    			<div class="row">
+    				<div class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
+    					<span class="campaignInfo"><span class="campaignInfoTitle">Referring Users: </span> {{campaign.ReferringCount}} User(s)</span>
+    				</div>
+    			</div>
+    		</div>
+
+    		<div id="buttonsContainer" class="col-xs-12 col-sm-12 col-md-3 col-lg-3 no-padding">
+	    		<div class="row">
+	    			<div class="col-md-12">
+	    				<campaign-activation-button></campaign-activation-button>
+	    			</div>
+	    		</div>
+    		</div>
+
+    	</div>
+
+    </div>
+
+</div>
+	

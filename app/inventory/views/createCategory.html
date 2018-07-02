@@ -1,0 +1,105 @@
+<style>
+    .categoryPhoto {
+        max-width: 100%;
+        max-height: 150px;
+    }
+    #categoryImageContainer {
+        margin-bottom: 15px;
+    }
+    #categoryImageContainer .row {
+        text-align: center;
+        margin-top: 15px;
+    }
+    #createCategoryForm {
+        padding: 10px;
+    }
+    #createCategoryForm .form-group label {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: normal;
+        color:#5b5b5b;
+    }
+    #createCategoryForm .form-group .form-control {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: normal;
+        color:#5b5b5b;
+    }
+    #submit {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+</style>
+
+<div id="content">
+    <div class="row">
+        <big-breadcrumbs items="['Inventory', 'Create Category']" icon="home" class="col-xs-12 col-sm-7 col-md-7 col-lg-4"></big-breadcrumbs>
+    </div>
+    <div calss="row">
+        <section widget-grid id="category-create-widget-grid">
+            <div class="row">
+                <article class="col-xs-12 col-sm-12 col-md-10 col-lg-8">
+                    <div id="category-create-widget" 
+                    data-widget-sortable 
+                    data-jarvis-widget 
+                    data-widget-deletebutton 
+                    data-widget-colorbutton 
+                    data-widget-editbutton 
+                    data-widget-togglebutton 
+                    data-widget-fullscreenbutton>
+                        <header>
+                            <span class="widget-icon"> <i class="fa fa-info"></i> </span>
+                            <h2>Create a category</h2>
+                        </header>
+                        <div>
+                            <div class="widget-body no-padding" id="formWidgetContent">
+                                <form id="createCategoryForm" ng-submit="createCategory()" name="myForm">
+                                    <div class="col-md-6" id="categoryImageContainer">
+                                        <div class="row">
+                                            <drop-zone></drop-zone>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label>English Name</label>
+                                                    <input class="form-control" type="text" ng-model="category.EnglishName" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Arabic Name</label>
+                                                    <input class="form-control" type="text" ng-model="category.ArabicName">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>English Description</label>
+                                                    <input class="form-control" type="text" ng-model="category.EnglishDescription"  required>
+                                                </div>
+                                                <div class="form-group">
+                                                        <label>Arabic Description</label>
+                                                        <input class="form-control" type="text" ng-model="category.ArabicDescription"  required>
+                                                    </div>
+                                                <div class="form-group">
+                                                    <label>Priority</label>
+                                                    <input class="form-control" type="number" ng-model="category.ViewOrder"  required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <button class="btn btn-warning" type="submit" id="submit" 
+                                                        ng-disabled="!picFile ||
+                                                            !category.ArabicName ||
+                                                            !category.ArabicDescription ||
+                                                            !category.EnglishDescription ||
+                                                            !category.EnglishName ||
+                                                            !category.ViewOrder">Create</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </div>
+</div>

@@ -1,0 +1,150 @@
+<style>
+	#selectGroup {
+		margin-bottom: 15px;
+	}
+</style>
+<div id="content">
+<div class="row">
+    <big-breadcrumbs items="['Staff', 'All Staff']" icon="home" class="col-xs-12 col-sm-7 col-md-7 col-lg-4"></big-breadcrumbs>
+</div>
+
+	<!-- Confirmation Modal -->
+    <div id="confirmationModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h5 class="modal-title" id="modal-title">Confirmation Needed</h5>
+                </div>
+                <div class="modal-body" id="modal-body">
+                    <h3>{{message}}</h3>
+                </div>
+                <div class="modal-footer">
+                    <button id="confirmationModal-delete-button" class="btn btn-danger" type="button" style="display: inline-block;">Delete</button>
+                    <button class="btn btn-warning" type="button" style="display: inline-block;" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- content -->
+    <div id="selectGroup" class="btn-group" data-toggle="buttons">
+        <label class="btn btn-info active" ng-click="displayAllStaff()">
+            <input type="radio" autocomplete="off" checked> All
+        </label>
+        <label class="btn btn-info" ng-click="displayAdmins()">
+            <input type="radio" autocomplete="off"> Admins
+        </label>
+        <label class="btn btn-info" ng-click="displayDrivers()">
+            <input type="radio" autocomplete="off"> Drivers
+        </label>
+	</div>
+
+	<!-- widget grid -->
+    <section widget-grid id="widget-grid">
+        <!-- row -->
+        <div class="row" ng-show="allStaff || admins">
+            <!-- NEW WIDGET START -->
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <!-- Widget ID (each widget will need unique ID)-->
+                <div id="admins-list-widget" 
+                        data-widget-sortable 
+                        data-jarvis-widget 
+                        data-widget-deletebutton 
+                        data-widget-colorbutton 
+                        data-widget-editbutton 
+                        data-widget-togglebutton 
+                        data-widget-fullscreenbutton>
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                        <h2>Admins</h2>
+                    </header>
+                    <!-- widget div-->
+                    <div>
+                        <!-- widget content -->
+                        <div class="widget-body no-padding">
+                            <table datatable-basic data-table-options="adminsTableOptions" bind-filters="true"
+                                   class="display projects-table table table-striped table-bordered table-hover"
+                                   cellspacing="0" width="100%">
+                                <thead>
+                                <tr>
+                                    <th class="hasinput"" style="width:30%">
+                                        <input type="text" class="form-control" placeholder="Customer Name Filter" />
+                                    </th>
+                                    <th class="hasinput"></th>
+                                    <th class="hasinput"></th>
+
+                                </tr>
+                                <tr>
+                                    <th data-class="expand">name</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <!-- end widget content -->
+                    </div>
+                    <!-- end widget div -->
+                </div>
+                <!-- end widget -->
+            </article>
+            <!-- WIDGET END -->
+        </div>
+        <!-- end row -->
+        <!-- row -->
+        <div class="row"  ng-show="allStaff || drivers">
+            <!-- NEW WIDGET START -->
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <!-- Widget ID (each widget will need unique ID)-->
+                <div id="drivers-list-widget" 
+                        data-widget-sortable 
+                        data-jarvis-widget 
+                        data-widget-deletebutton 
+                        data-widget-colorbutton 
+                        data-widget-editbutton 
+                        data-widget-togglebutton 
+                        data-widget-fullscreenbutton>
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+
+                        <h2>Drivers</h2>
+                    </header>
+                    <!-- widget div-->
+                    <div>
+                        <!-- widget content -->
+                        <div class="widget-body no-padding">
+
+                            <table datatable-basic data-table-options="driversTableOptions" bind-filters="true"
+                                   class="display projects-table table table-striped table-bordered table-hover"
+                                   cellspacing="0" width="100%">
+                                <thead>
+                                <tr>
+                                    <th class="hasinput" style="width:30%">
+                                        <input type="text" class="form-control" placeholder="Customer Name Filter" />
+                                    </th>
+                                    <th class="hasinput"></th>
+                                    <th class="hasinput"></th>
+                                </tr>
+                                <tr>
+                                    <th data-class="expand">name</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <!-- end widget content -->
+                    </div>
+                    <!-- end widget div -->
+                </div>
+                <!-- end widget -->
+            </article>
+            <!-- WIDGET END -->
+        </div>
+        <!-- end row -->
+    </section>
+    <!-- end widget grid -->
+</div>
+	

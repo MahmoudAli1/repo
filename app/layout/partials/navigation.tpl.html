@@ -1,0 +1,139 @@
+<aside id="left-panel">
+    <div login-info></div>
+    <nav>
+        <ul data-smart-menu>
+            <li data-menu-collapse>
+                <a href="#" title="Statistics">
+                    <i class="fa fa-lg fa-fw fa-bar-chart-o"></i> <span class="menu-item-parent">{{getWord('Statistics')}}</span>
+                </a>
+                <ul>
+                    <li data-ui-sref-active="active">
+                        <a data-ui-sref="app.statistics.dashboard">{{getWord('Dashboard')}}</a>
+                    </li>
+                    <li data-ui-sref-active="active" ng-controller="StatisticsController as statistics">
+                        <a data-ui-sref="app.statistics.orders">{{getWord('Orders List')}}</a>
+                    </li>
+                    <li data-ui-sref-active="active" ng-controller="StatisticsController as statistics">
+                        <a data-ui-sref="app.statistics.items">{{getWord('Items List')}}</a>
+                    </li>
+                </ul>
+            </li>
+            <li data-menu-collapse>
+                <a href="#" title="Trips">
+                    <i class="fa fa-lg fa-fw fa-shopping-cart"></i> <span class="menu-item-parent">Trips</span>
+                </a>
+                <ul>
+                    <li data-ui-sref-active="active">
+                        <a data-ui-sref="app.trips.allTrips">View Trips</a>
+                    </li>
+                    <li data-ui-sref-active="active" ng-controller="StatisticsController as statistics">
+                        <a data-ui-sref="app.trips.create">Create Trip</a>
+                    </li>
+                </ul>
+            </li>
+            <li data-menu-collapse>
+                <a href="#" title="Inventory">
+                    <i class="fa fa-lg fa-fw fa-square-o"></i> <span class="menu-item-parent">{{getWord('Inventory')}}</span>
+                </a>
+                <ul>
+                    <li data-ui-sref-active="active">
+                        <a data-ui-sref="app.inventory.categories">{{getWord('Categories')}}</a>
+                    </li>
+                    <li data-ui-sref-active="active">
+                        <a data-ui-sref="app.inventory.createCategory">{{getWord('Create Category')}}</a>
+                    </li>
+                    <li data-ui-sref-active="active">
+                        <a data-ui-sref="app.inventory.createSubcategory">{{getWord('Create Subcategory')}}</a>
+                    </li>
+                    <li data-ui-sref-active="active">
+                        <a data-ui-sref="app.inventory.createCategoryItem">{{getWord('Create Item')}}</a>
+                    </li>
+                    <li data-ui-sref-active="active">
+                        <a data-ui-sref="app.inventory.createSubcategoryBranch">{{getWord('Create Branch')}}</a>
+                    </li>
+                </ul>
+            </li>
+            <li data-menu-collapse>
+                <a href="#" title="Staff">
+                    <i class="fa fa-lg fa-fw fa-user"></i> <span class="menu-item-parent">{{getWord('Staff')}}</span>
+                </a>
+                <ul>
+                    <li data-ui-sref-active="active">
+                        <a data-ui-sref="app.staff.allStaff">{{getWord('All Staff')}}</a>
+                    </li>
+                    <li data-ui-sref-active="active">
+                        <a data-ui-sref="app.staff.create">{{getWord('Create Staff')}}</a>
+                    </li>
+                </ul>
+            </li>
+            <li data-menu-collapse>
+                <a href="#" title="Cars">
+                    <i class="fa fa-lg fa-fw fa-car"></i> <span class="menu-item-parent">{{getWord('Cars')}}</span>
+                </a>
+                <ul>
+                    <li data-ui-sref-active="active">
+                        <a data-ui-sref="app.cars.allCars">{{getWord('All Cars')}}</a>
+                    </li>
+                    <li data-ui-sref-active="active">
+                        <a data-ui-sref="app.cars.create">{{getWord('Create Car')}}</a>
+                    </li>
+                </ul>
+            </li>
+            <li data-menu-collapse>
+                <a href="#" title="areas">
+                    <i class="fa fa-lg fa-fw fa-map-marker"></i> <span class="menu-item-parent">{{getWord('Areas')}}</span>
+                </a>
+                <ul>
+                    <li data-ui-sref-active="active">
+                        <a data-ui-sref="app.areas.allAreas">{{getWord('All Areas Map')}}</a>
+                    </li>
+                    <li data-ui-sref-active="active">
+                        <a data-ui-sref="app.areas.createArea">{{getWord('Create Area')}}</a>
+                    </li>
+                    <li data-ui-sref-active="active">
+                        <a data-ui-sref="app.areas.manageAreas">{{getWord('Manage Areas')}}</a>
+                    </li>
+                    <li data-ui-sref-active="active">
+                        <a data-ui-sref="app.areas.manageLocations">{{getWord('Manage Locations')}}</a>
+                    </li>
+                </ul>
+            </li>
+            <li data-menu-collapse>
+                <a href="#" title="customers">
+                    <i class="fa fa-lg fa-fw fa-group"></i> <span class="menu-item-parent">{{getWord('Customers')}}</span>
+                </a>
+                <ul>
+                    <li data-ui-sref-active="active">
+                        <a data-ui-sref="app.customers.allCustomers">{{getWord('Customers List')}}</a>
+                    </li>
+                </ul>
+            </li>
+            <li data-menu-collapse>
+                <a href="#" title="campaigns">
+                    <i class="fa fa-lg fa-fw fa-rocket"></i> <span class="menu-item-parent">{{getWord('Campaigns')}}</span>
+                </a>
+                <ul>
+                    <li data-ui-sref-active="active">
+                        <a data-ui-sref="app.campaigns.createCampaign">{{getWord('Create Campaign')}}</a>
+                    </li>
+                    <li data-ui-sref-active="active">
+                        <a data-ui-sref="app.campaigns.manageCampaigns">{{getWord('Manage Campaigns')}}</a>
+                    </li>
+                </ul>
+            </li>
+            <li data-menu-collapse>
+                <a href="#" title="settings">
+                    <i class="fa fa-lg fa-fw fa fa-cogs"></i> <span class="menu-item-parent">{{getWord('Settings')}}</span>
+                </a>
+                <ul>
+                    <li data-ui-sref-active="active">
+                        <a data-ui-sref="app.settings.localizations">{{getWord('Localizations')}}</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+    <span class="minifyme" data-action="minifyMenu" minify-menu>
+        <i class="fa fa-arrow-circle-left hit"></i>
+    </span>
+</aside>

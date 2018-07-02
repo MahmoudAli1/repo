@@ -1,0 +1,110 @@
+<style>
+	#buttonsContainer {
+		text-align: center;
+	}
+
+	.form-group label {
+		/*display: inline-block;*/
+		max-width: 100%;
+		margin-bottom: 5px;
+		font-weight: 700;
+	}
+
+	#formWidgetContent {
+		padding: 13px 13px 0px 13px !important;
+	}
+</style>
+<div class="alert alert-success" ng-show="isDistrictCreated">
+	<strong>Success!</strong> New district has been created.
+</div>
+<div id="content">
+	<div class="row">
+		<big-breadcrumbs items="['Districts', 'Create District']" icon="plus-square-o" class="col-xs-12 col-sm-7 col-md-7 col-lg-4"></big-breadcrumbs>
+	</div>
+
+	<div class="row">
+		<!-- content -->
+		<!-- widget grid -->
+		<section widget-grid id="create-area-widget-grid">
+			<!-- row -->
+			<div class="row">
+				<!-- NEW WIDGET START -->
+				<div class="col-md-12">
+					<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						<!-- Widget ID (each widget will need unique ID)-->
+						<div id="area-info-widget" 
+						data-widget-sortable 
+						data-jarvis-widget 
+						data-widget-deletebutton 
+						data-widget-colorbutton 
+						data-widget-editbutton 
+						data-widget-togglebutton 
+						data-widget-fullscreenbutton>
+			                    <header>
+			                    	<span class="widget-icon"> <i class="fa fa-info"></i> </span>
+
+			                    	<h2>District Information</h2>
+			                    </header>
+			                    <!-- widget div-->
+			                    <div>
+			                    	<!-- widget content -->
+			                    	<div class="widget-body no-padding" id="formWidgetContent">
+										 
+			                    		<form ng-submit="createDistrict()">
+                                               	<div class="col-md-12" id="districtImageContainer">
+			                    				<div class="row">
+			                    					<drop-zone></drop-zone>
+			                    				</div>
+			                    			</div>
+			                    			<div class="form-group" id="districtNameGroup">
+			                    				<label>English Name</label>
+			                    				<div>
+			                    					<input class="form-control" placeholder="English Name" type="text" ng-model="district.englishName" required="This field is required">
+			                    				</div>
+			                    			</div>
+			                    					<div class="form-group" id="districtArabicNameGroup">
+			                    				<label>Arabic Name</label>
+			                    				<div>
+			                    					<input class="form-control" placeholder="Arabic Name" type="text" ng-model="district.arabicName" required="This field is required">
+			                    				</div>
+			                    			</div>
+			                    			<div class="form-group">
+			                    				<label>City</label>
+			                    				<div>
+			                    					<select class="form-control"
+						                                    ng-options="city.Name for city in citySelect.availableOptions track by city.ID"
+						                                    ng-model="citySelect.selectedOption"
+						                                    ">
+						                            </select>
+			                    				</div>
+			                    			</div>
+			                  
+			                    			
+			                    			<div class="row" id="buttonsContainer">
+			                    				<div class="form-group col-md-6">
+			                    					<button type="submit" class="btn btn-success"
+			                    							ng-disabled="
+			                    								!district.englishName ||
+			                    								citySelect.selectedOption.ID === -1 ||
+			                    								!district.arabicName
+			                    								">Create District</button>
+			                    				</div>
+			                    				
+			                    			</div>
+			                    		</form>
+
+			                    	</div>
+			                    	<!-- end widget content -->
+			                    </div>
+			                    <!-- end widget div -->
+			                </div>
+			                <!-- end widget -->
+			            </article>
+			            <!-- WIDGET END --> 
+		        </div>
+		        <!-- end row -->
+		    </section>
+		<!-- end widget grid -->
+	</div>
+</div>
+	

@@ -1,0 +1,59 @@
+<style>
+	#buttonsContainer {
+		text-align: center;
+	}
+
+	.form-group label {
+		max-width: 100%;
+		margin-bottom: 5px;
+		font-weight: 700;
+	}
+
+	#formWidgetContent {
+		padding: 13px 13px 0px 13px !important;
+	}
+</style>
+<div id="content">
+	<div class="row">
+		<big-breadcrumbs items="['Cities', 'Create City']" icon="plus-square-o" class="col-xs-12 col-sm-7 col-md-7 col-lg-4"></big-breadcrumbs>
+	</div>
+	<div class="row">
+		<section widget-grid id="create-area-widget-grid">
+			<div class="row">
+				<div class="col-md-4">
+					<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						<div id="area-info-widget" 
+						data-widget-sortable 
+						data-jarvis-widget 
+						data-widget-deletebutton 
+						data-widget-colorbutton 
+						data-widget-editbutton 
+						data-widget-togglebutton 
+						data-widget-fullscreenbutton>
+                            <header>
+                                <span class="widget-icon"> <i class="fa fa-info"></i> </span>
+                                <h2>City Information</h2>
+                            </header>
+                            <div>
+                                <div class="widget-body no-padding" id="formWidgetContent">
+                                    <form ng-submit="createCity()">
+                                        <div class="form-group">
+                                            <label>Name</label>
+                                            <div>
+                                                <input class="form-control" placeholder="Name" type="text" ng-model="name" required="This field is required">
+                                            </div>
+                                        </div>
+                                        <div class="row" id="buttonsContainer">
+                                            <div class="form-group col-md-6">
+                                                <button type="submit" class="btn btn-success" ng-disabled="!name">Create City</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+		        </div>
+        </section>
+	</div>
+</div>

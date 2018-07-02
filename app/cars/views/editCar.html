@@ -1,0 +1,133 @@
+<style>
+	.carPhoto {
+		max-width: 100%;
+		max-height: 150px;
+	}
+	#carImageContainer .row {
+		text-align: center;
+		margin-top: 15px;
+		margin-bottom: 15px;
+	}
+	#editCarForm {
+		padding: 10px;
+	}
+	#editCarForm .form-group label {
+		font-family: 'Montserrat', sans-serif;
+		font-weight: normal;
+		color:#5b5b5b;
+	}
+	#editCarForm .form-group .form-control {
+		font-family: 'Montserrat', sans-serif;
+		font-weight: normal;
+		color:#5b5b5b;
+	}
+	#submit {
+		width: 100%;
+		margin-bottom: 10px;
+	}
+	.cropArea {
+	    overflow: hidden;
+	    width:100%;
+	    height:350px;
+	}
+	form .progress {
+	    line-height: 15px;
+	}
+	.progress {
+	    display: inline-block;
+	    width: 100px;
+	    border: 3px groove #CCC;
+	}
+	.progress div {
+	    font-size: smaller;
+	    background: orange;
+	    width: 0;
+	}
+</style>
+<div class="alert alert-warning fade in"  ng-hide="car">
+	<i class="fa-fw fa fa-warning"></i>
+	<strong>Warning</strong> No car was selected.
+</div>
+<div id="content">
+	<div class="row">
+		<big-breadcrumbs items="['Cars', 'Edit a car']" icon="pencil" class="col-xs-12 col-sm-7 col-md-7 col-lg-4"></big-breadcrumbs>
+	</div>
+    <div class="row">
+    	<section widget-grid id="car-edit-widget-grid">
+			<div class="row">
+				<article class="col-xs-12 col-sm-12 col-md-10 col-lg-8">
+					<div id="car-edit-widget" 
+					data-widget-sortable 
+					data-jarvis-widget 
+					data-widget-deletebutton 
+					data-widget-colorbutton 
+					data-widget-editbutton 
+					data-widget-togglebutton 
+					data-widget-fullscreenbutton>
+						<header>
+							<span class="widget-icon"> <i class="fa fa-info"></i> </span>
+							<h2>Edit a car</h2>
+						</header>
+						<div>
+							<div class="widget-body no-padding" id="formWidgetContent">
+								<form id="editCarForm" ng-submit="updateCar()" name="myForm">
+									<div class="col-md-6" id="carImageContainer">
+										<div class="row">
+											<drop-zone></drop-zone>
+										</div>
+									</div>
+									<div class="col-md-6">
+									<div class="row">
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Manufacturer</label>
+												<input class="form-control" type="text" ng-model="car.Manufacturer">
+											</div>
+											<div class="form-group">
+												<label>Model Year</label>
+												<input class="form-control" type="text" ng-model="car.ModelYear" >
+											</div>
+											<div class="form-group">
+												<label>Username</label>
+												<input class="form-control" type="text" ng-model="car.Username" >
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Model Name</label>
+												<input class="form-control" type="text" ng-model="car.ModelName" >
+											</div>
+											<div class="form-group">
+												<label>Plate Number</label>
+												<input class="form-control" type="text" ng-model="car.PlateNumber" >
+											</div>
+											<div class="form-group">
+												<label>Password</label>
+												<input class="form-control" type="password" ng-model="car.Password" >
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-12">
+											<button class="btn btn-warning" type="submit" id="submit"
+												ng-disabled="
+													!picFile ||
+													!car.Manufacturer ||
+													!car.ModelYear ||
+													!car.Username ||
+													!car.ModelName ||
+													!car.PlateNumber ||
+													!car.Password">Submit Changes</button>
+										</div>
+									</div>
+									</div>
+								</form>
+
+							</div>
+						</div>
+					</div>
+				</article>
+			</div>
+		</section>
+    </div>
+</div>

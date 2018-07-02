@@ -1,0 +1,36 @@
+<style>
+	.add-trans-btn {
+		line-height:5;
+		margin-right: 48px;
+	}
+</style>
+
+<div class="row">
+	<big-breadcrumbs items="['Settings', 'Localization']" icon="text-size" class="col-xs-12 col-sm-7 col-md-7 col-lg-4"></big-breadcrumbs>
+	<div class="add-trans-btn pull-right"><button class="btn btn-lg btn-success" ng-click="createLocalization()">Add new translation</button></div>
+</div>
+		<div class="container-fluid">
+			<div ng-repeat="localization in localizations track by $index" class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">Translation Key: {{localization.key}}</h3>
+				</div>
+
+				<div class="panel-body">
+					<div class="">
+						<div class="col-xs-12 col-md-6" dir="RTL">
+							<strong>العنوان العربي:  </strong> {{localization.arabicTitle}} <br/>
+							<strong>الرسالة بالعربي: </strong> {{localization.arabicBody}}
+						</div>
+						<div class="col-xs-12 col-md-6">
+							<strong>English Title:  </strong> {{localization.englishTitle}} <br/>
+							<strong>English Body: </strong> {{localization.englishBody}}
+						</div>
+					</div>
+				</div>
+				<div class="panel-footer">
+					<button class="btn btn-warning" ng-click="editLocalization(localization)">Edit</button>
+					<button class="btn btn-danger" ng-click="deleteLocalization(localization)">Delete</button>
+				</div>
+
+			</div>
+    	</div>

@@ -1,0 +1,149 @@
+<style>
+	.districtPhoto {
+		max-width: 100%;
+		max-height: 150px;
+	}
+
+	#districtImageContainer .row {
+		text-align: center;
+		margin-top: 15px;
+		margin-bottom: 15px;
+	}
+
+	#editDistrictForm {
+		padding: 10px;
+	}
+
+	#editDistrictForm .form-group label {
+		font-family: 'Montserrat', sans-serif;
+		font-weight: normal;
+		color:#5b5b5b;
+	}
+
+	#editDistrictForm .form-group .form-control {
+		font-family: 'Montserrat', sans-serif;
+		font-weight: normal;
+		color:#5b5b5b;
+	}
+
+	#submit {
+		width: 100%;
+		margin-bottom: 10px;
+	}
+
+	.cropArea {
+	    overflow: hidden;
+	    width:100%;
+	    height:350px;
+	}
+
+	form .progress {
+	    line-height: 15px;
+	}
+
+	.progress {
+	    display: inline-block;
+	    width: 100px;
+	    border: 3px groove #CCC;
+	}
+
+	.progress div {
+	    font-size: smaller;
+	    background: orange;
+	    width: 0;
+	}
+</style>
+
+<div class="alert alert-warning fade in"  ng-hide="district">
+	<i class="fa-fw fa fa-warning"></i>
+	<strong>Warning</strong> No district was selected.
+</div>
+<div id="content">
+<div class="row">
+    <big-breadcrumbs items="['Districts', 'Edit a district']" icon="pencil" class="col-xs-12 col-sm-7 col-md-7 col-lg-4"></big-breadcrumbs>
+</div>
+
+    <!-- content -->
+    <div calss="row">
+    	<!-- widget grid -->
+		<section widget-grid id="district-edit-widget-grid">
+			<!-- row -->
+			<div class="row">
+				<!-- NEW WIDGET START -->
+				<article class="col-xs-12 col-sm-12 col-md-10 col-lg-8">
+						<!-- Widget ID (each widget will need unique ID)-->
+						<div id="district-edit-widget" 
+						data-widget-sortable 
+						data-jarvis-widget 
+						data-widget-deletebutton 
+						data-widget-colorbutton 
+						data-widget-editbutton 
+						data-widget-togglebutton 
+						data-widget-fullscreenbutton>
+			                    <header>
+			                    	<span class="widget-icon"> <i class="fa fa-info"></i> </span>
+			                    	<h2>Edit a district</h2>
+			                    </header>
+			                    <!-- widget div-->
+			                    <div>
+			                    	<!-- widget content -->
+			                    	<div class="widget-body no-padding" id="formWidgetContent">
+			                    		<form id="editDistrictForm" ng-submit="updateDistrict()" name="myForm">
+			                    			<div class="col-md-6" id="districtImageContainer">
+			                    				<div class="row">
+			                    					<drop-zone></drop-zone>
+			                    				</div>
+			                    			</div>
+			                    			<div class="col-md-6">
+			                    			<div class="row">
+				                    			<div class="col-md-12">
+				                    				<div class="form-group">
+				                    					<label>Name</label>
+				                    					<input class="form-control" type="text" ng-model="district.EnglishName">
+				                    				</div>
+				                    				<div class="form-group">
+				                    					<label>Arabic Name</label>
+				                    					<input class="form-control" type="text" ng-model="district.ArabicName" >
+				                    				</div>
+				                    				<div class="form-group">
+			                    						<label>City</label>
+			                    						<div>
+			                    							<select class="form-control"
+						                                    	ng-options="city.Name for city in citySelect.availableOptions track by city.ID"
+						                                    	ng-model="citySelect.selectedOption">
+						                            		</select>
+			                    						</div>
+			                    					</div>
+			                    				</div>
+			                    			</div>
+			                    			<div class="row">
+				                    			<div class="col-md-12">
+				                    				<button class="btn btn-warning" type="submit" id="submit"
+				                    					ng-disabled="
+			                    							!picFile ||
+			                    							!district.EnglishName ||
+			                    							!district.ArabicName||
+			                    							citySelect.selectedOption.ID === -1
+			                    							">Submit Changes</button>
+				                    			</div>
+			                    			</div>
+			                    			</div>
+			                    		</form>
+
+			                    	</div>
+			                    	<!-- end widget content -->
+			                    </div>
+			                    <!-- end widget div -->
+			                </div>
+			                <!-- end widget -->
+			            </article>
+			            <!-- WIDGET END --> 
+			    <!-- NEW WIDGET START -->
+				
+		        <!-- end row -->
+		    </section>
+		<!-- end widget grid -->
+    </div>
+    
+</div>
+	

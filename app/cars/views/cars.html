@@ -1,0 +1,110 @@
+<style>
+	.carImage {
+		height: 50px;
+		width: auto;
+	}
+</style>
+
+<div id="content">
+<div class="row">
+    <big-breadcrumbs items="['Cars', 'All Cars']" icon="car" class="col-xs-12 col-sm-7 col-md-7 col-lg-4"></big-breadcrumbs>
+</div>
+	<!-- Confirmation Modal -->
+    <div id="confirmationModal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h5 class="modal-title" id="modal-title">Confirmation Needed</h5>
+        </div>
+        <div class="modal-body" id="modal-body">
+            <h3>{{message}}</h3>
+        </div>
+        <div class="modal-footer">
+            <button id="confirmationModal-delete-button" class="btn btn-danger" type="button" style="display: inline-block;">Delete</button>
+            <button class="btn btn-warning" type="button" style="display: inline-block;" data-dismiss="modal">Cancel</button>
+        </div>
+        </div>
+
+      </div>
+    </div>
+    <!-- widget grid -->
+    <section widget-grid id="cars-list-widget-grid">
+        <!-- row -->
+        <div class="row">
+            <!-- NEW WIDGET START -->
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <!-- Widget ID (each widget will need unique ID)-->
+                <div class="well" id="cars-list-widget" data-jarvis-widget>
+
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                        <h2>Cars</h2>
+                    </header>
+                    <!-- widget div-->
+                    <div>
+                        <!-- widget content -->
+                        <div class="widget-body no-padding">
+                            <table datatable-basic data-table-options="tableOptions" bind-filters="true"
+                                   class="display projects-table table table-striped table-bordered table-hover"
+                                   cellspacing="0" width="100%">
+                                <thead>
+                                <tr>
+                                    <th class="hasinput" style="width:10%"></th>
+                                    <th class="hasinput" style="width:12%">
+                                        <input type="text" class="form-control" placeholder="Manufacturer" />
+                                    </th>
+                                    <th class="hasinput" style="width:10%">
+                                        <input type="text" class="form-control" placeholder="Model" />
+                                    </th>
+                                    <th class="hasinput" style="width:5%">
+                                        <input type="text" placeholder="Year" class="form-control"/>
+                                    </th>
+                                    <th class="hasinput" style="width:5%">
+                                        <input type="text" class="form-control" placeholder="Plate" />
+                                    </th>
+                                    <th class="hasinput" style="width:12%">
+                                        <input type="text" class="form-control" placeholder="Driver" />
+                                    </th>
+                                    <th class="hasinput" style="width:10%">
+                                        <input type="text" class="form-control" placeholder="Username" />
+                                    </th>
+                                    <th class="hasinput" style="width:10%">
+                                        <input type="text" class="form-control" placeholder="Password" />
+                                    </th>
+                                    <th class="hasinput" style="width:10%">
+                                        <input type="text" class="form-control" placeholder="Status" />
+                                    </th>
+                                    <th class="hasinput"></th>
+                                    <th class="hasinput"></th>
+                                </tr>
+                                <tr>
+                                    <th data-class="expand">Image</th>
+                                    <th>Manufacturer</th>
+                                    <th >Model</th>
+                                    <th data-hide="phone, tablet">Year</th>
+                                    <th data-hide="phone, tablet">Plate</th>
+                                    <th data-hide="phone,tablet">Driver</th>
+                                    <th data-hide="phone,tablet">Username</th>
+                                    <th data-hide="phone,tablet">Password</th>
+                                    <th>Status</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <!-- end widget content -->
+                    </div>
+                    <!-- end widget div -->
+                </div>
+                <!-- end widget -->
+            </article>
+            <!-- WIDGET END -->
+        </div>
+        <!-- end row -->
+    </section>
+    <!-- end widget grid -->
+</div>

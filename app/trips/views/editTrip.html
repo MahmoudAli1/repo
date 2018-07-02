@@ -1,0 +1,221 @@
+<style>
+    #buttonsContainer {
+        text-align: center;
+    }
+    .form-group label {
+        max-width: 100%;
+        margin-bottom: 5px;
+        font-weight: 700;
+    }
+    #formWidgetContent {
+        padding: 13px 13px 0px 13px !important;
+    }
+</style>
+<div id="content">
+    <div class="row">
+        <big-breadcrumbs items="['Trips', 'Edit Trip']" icon="plus-square-o" class="col-xs-12 col-sm-7 col-md-7 col-lg-4"></big-breadcrumbs>
+    </div>
+    <div class="row">
+        <section widget-grid id="create-area-widget-grid">
+            <form ng-submit="updateTrip()">
+                <div class="row">                        
+                    <div class="col-md-4">
+                        <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div id="area-info-widget" 
+                            data-widget-sortable 
+                            data-jarvis-widget 
+                            data-widget-deletebutton 
+                            data-widget-colorbutton 
+                            data-widget-editbutton 
+                            data-widget-togglebutton 
+                            data-widget-fullscreenbutton>
+                                <header>
+                                    <span class="widget-icon"> <i class="fa fa-info"></i> </span>
+                                    <h2>Adding Areas</h2>
+                                </header>
+                                <div>                                
+                                    <div class="widget-body no-padding" id="formWidgetContent">
+                                        <div>
+                                            <table width="100%" cellspacing="0" class="display projects-table table table-striped table-bordered table-hover">
+                                                <tr>
+                                                    <th>Area</th>
+                                                    <th></th>
+                                                </tr>
+                                                <tr ng-repeat="area in tripAreas">
+                                                    <td>{{area.Name}}</td>
+                                                    <td ng-click="removeArea(area.ID)"><button class="btn btn-danger">Delete</button></td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>City</label>
+                                            <div>
+                                                <select class="form-control"
+                                                        ng-options="city.Name for city in citySelect.availableOptions track by city.ID"
+                                                        ng-model="citySelect.selectedOption"
+                                                        ng-change="getCityDistricts()">
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>District</label>
+                                            <div>
+                                                <select class="form-control"
+                                                    ng-disabled="!districtSelect.availableOptions"
+                                                    ng-options="district.EnglishName for district in districtSelect.availableOptions track by district.ID"
+                                                    ng-model="districtSelect.selectedOption"
+                                                    ng-change="getDistrictAreas()">
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Area</label>
+                                            <div>
+                                                <select class="form-control"
+                                                    ng-disabled="!areaSelect.availableOptions"
+                                                    ng-options="area.Name for area in areaSelect.availableOptions track by area.ID"
+                                                    ng-model="areaSelect.selectedOption"
+                                                    ng-change="addArea()">
+                                                </select>
+                                            </div>
+                                        </div>                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                    <div class="col-md-4">
+                            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <div id="area-info-widget" 
+                                    data-widget-sortable 
+                                    data-jarvis-widget 
+                                    data-widget-deletebutton 
+                                    data-widget-colorbutton 
+                                    data-widget-editbutton 
+                                    data-widget-togglebutton 
+                                    data-widget-fullscreenbutton>
+                                        <header>
+                                            <span class="widget-icon"> <i class="fa fa-info"></i> </span>
+                                            <h2>Adding Items</h2>
+                                        </header>
+                                        <div>                                
+                                            <div class="widget-body no-padding" id="formWidgetContent">
+                                                <div>
+                                                    <table width="100%" cellspacing="0"
+                                                    class="display projects-table table table-striped table-bordered table-hover">
+                                                        <tr>
+                                                            <th>Subcategory Name</th>
+                                                            <th>Item Name</th>
+                                                            <th>Quantity</th>
+                                                            <th></th>
+                                                        </tr>
+                                                        <tr ng-repeat="tripItem in tripItems">
+                                                            <td>{{tripItem.Item ? tripItem.Item.Category.EnglishName : tripItem.Category.EnglishName}}</td>
+                                                            <td>{{tripItem.Item ? tripItem.Item.EnglishName : tripItem.EnglishName}}</td>
+                                                            <td><input id="suggestedQuantity{{tripItem.Item ? tripItem.ItemID : tripItem.ID}}" type="number" value="{{tripItem.SuggestedQuantity}}"/></td>
+                                                            <td ng-click="removeItem(tripItem.ItemID)"><button class="btn btn-danger">Delete</button></td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Category</label>
+                                                    <div>
+                                                        <select class="form-control"
+                                                                ng-options="category.EnglishName for category in categorySelect.availableOptions track by category.ID"
+                                                                ng-model="categorySelect.selectedOption"
+                                                                ng-change="getCategorySubcategories()">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Subcategory</label>
+                                                    <div>
+                                                        <select class="form-control"
+                                                            ng-disabled="!subcategorySelect.availableOptions"
+                                                            ng-options="subcategory.EnglishName for subcategory in subcategorySelect.availableOptions track by subcategory.ID"
+                                                            ng-model="subcategorySelect.selectedOption"
+                                                            ng-change="getSubcategoryItemsAndBranches()">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Branches</label>
+                                                    <div>
+                                                        <select class="form-control"
+                                                            ng-disabled="!branchSelect.availableOptions"
+                                                            ng-options="branch.Name for branch in branchSelect.availableOptions track by branch.ID"
+                                                            ng-model="branchSelect.selectedOption"
+                                                            ng-change="addBranch()">
+                                                        </select>
+                                                    </div>
+                                                </div>  
+                                                <div class="form-group">
+                                                    <label>Item</label>
+                                                    <div>
+                                                        <select class="form-control"
+                                                            ng-disabled="!itemSelect.availableOptions"
+                                                            ng-options="item.EnglishName for item in itemSelect.availableOptions track by item.ID"
+                                                            ng-model="itemSelect.selectedOption"
+                                                            ng-change="addItem()">
+                                                        </select>
+                                                    </div>
+                                                </div>                                        
+                                            </div>
+                                        </div>
+                                    </div>
+                                </article>
+                    </div>
+                    <div class="col-md-4">
+                        <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div id="area-info-widget" 
+                            data-widget-sortable 
+                            data-jarvis-widget 
+                            data-widget-deletebutton 
+                            data-widget-colorbutton 
+                            data-widget-editbutton 
+                            data-widget-togglebutton 
+                            data-widget-fullscreenbutton>
+                                <header>
+                                    <span class="widget-icon"> <i class="fa fa-info"></i> </span>
+                                    <h2>General Information</h2>
+                                </header>
+                                <div>                                
+                                    <div class="widget-body no-padding" id="formWidgetContent">
+                                        <div class="form-group">
+                                            <label>Start Date</label>
+                                            <div id="datepicker_trip" class="form-control">
+                                                <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+                                                <span></span> <b class="caret"></b>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Car</label>
+                                            <div>
+                                                <select class="form-control"
+                                                        ng-options="car.Name for car in carSelect.availableOptions track by car.ID"
+                                                        ng-model="carSelect.selectedOption">
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Driver</label>
+                                            <div>
+                                                <select class="form-control"
+                                                    ng-options="driver.Name for driver in driverSelect.availableOptions track by driver.Id"
+                                                    ng-model="driverSelect.selectedOption">
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                            <button type="submit" class="btn btn-success pull-right" ng-disabled="">Update Trip</button>
+                                        </div>                                    
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>

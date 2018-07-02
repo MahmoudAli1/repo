@@ -1,0 +1,95 @@
+<style>
+#datepicker_campaign i {
+	position: relative;
+	top: auto;
+	cursor: pointer;
+}
+
+#datepicker_campaign .caret {
+	float: right;
+	margin-top: 8px;
+	margin-right: -6px;
+}
+
+</style>
+
+<div class="alert alert-success" ng-show="isCampaignCreated">
+	<strong>Success!</strong> New area has been created.
+</div>
+
+<div id="content">
+<div class="row">
+    <big-breadcrumbs items="['Campaigns', 'Create Campaign']" icon="home" class="col-xs-12 col-sm-7 col-md-7 col-lg-4"></big-breadcrumbs>
+</div>
+
+    <!-- content -->
+    <div id="formContainer" class="well well-lg col-md-6 col-md-offset-3">
+
+    	<div class="row">
+    		<div class="col-md-4 col-md-offset-4 text-center">
+    			<span class="font-md">
+    				<strong>New Campaign</strong>
+    			</span>
+    		</div>
+    	</div>
+
+    	<div class="row">
+    		<div class="col-md-6 col-md-offset-3">
+    			
+    			<form ng-submit="createCampaign()">
+
+    				<div class="form-group">
+    					<label>Date</label>
+    					<div id="datepicker_campaign" class="form-control">
+						    <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+						    <span></span> <b class="caret"></b>
+						</div>
+    				</div>
+
+    				<div class="form-group">
+    					<label>City</label>
+    					<div>
+        					<select class="form-control"
+                                    ng-options="city.Name for city in citySelect.availableOptions track by city.ID"
+                                    ng-model="citySelect.selectedOption"
+                                    ng-change="getCityDistricts()">
+                            </select>
+        				</div>
+    				</div>
+
+    				<div class="form-group">
+    					<label>District</label>
+    					<div>
+        					<select class="form-control"
+		                        ng-disabled="!districtSelect.availableOptions"
+		                        ng-options="district.EnglishName for district in districtSelect.availableOptions track by district.ID"
+		                        ng-model="districtSelect.selectedOption">
+		                	</select>
+        				</div>
+    				</div>
+
+    				<div class="form-group">
+    					<label>Added Balance (SAR)</label>
+    					<input class="form-control" placeholder="balance" type="number" min="0" ng-model="addedBalance" required="This field is required">
+    				</div>
+
+    				<div class="form-group">
+    					<button type="submit" class="btn btn-success col-md-12"
+    							ng-disabled="
+    								!startDate ||
+    								!startTime ||
+    								!endDate ||
+    								!endTime ||
+    								citySelect.selectedOption.id === -1 ||
+    								!districtSelect.availableOptions ||
+    								districtSelect.selectedOption.id === -1 ||
+    								!addedBalance">Create Campaign</button>
+    				</div>
+
+    			</form>
+    		</div>
+    	</div>
+
+    </div>
+</div>
+	

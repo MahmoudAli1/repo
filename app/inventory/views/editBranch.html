@@ -1,0 +1,89 @@
+<style>
+    #createCategoryBranchForm {
+        padding: 10px;
+    }
+    #createCategoryBranchForm .form-group label {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: normal;
+        color:#5b5b5b;
+    }
+    #createCategoryBranchForm .form-group .form-control {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: normal;
+        color:#5b5b5b;
+    }
+    #submit {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    #map {
+        width : 420px;
+        height: 300px;
+        margin-bottom: 10px;
+    }
+</style>
+
+<div id="content">
+    <div class="row">
+        <big-breadcrumbs items="['Inventory', 'Edit Branch']" icon="home" class="col-xs-12 col-sm-7 col-md-7 col-lg-4"></big-breadcrumbs>
+    </div>
+    <div class="row">
+        <section widget-grid id="category-item-create-widget-grid">
+            <div class="row">
+                <article class="col-xs-12 col-sm-12 col-md-10 col-lg-8">
+                    <div id="category-item-create-widget" 
+                    data-widget-sortable 
+                    data-jarvis-widget 
+                    data-widget-deletebutton 
+                    data-widget-colorbutton 
+                    data-widget-editbutton 
+                    data-widget-togglebutton 
+                    data-widget-fullscreenbutton>
+                        <header>
+                            <span class="widget-icon"> <i class="fa fa-info"></i> </span>
+                            <h2>Edit a branch</h2>
+                        </header>
+                        <div>
+                            <div class="widget-body no-padding" id="formWidgetContent">
+                                <form id="createCategoryBranchForm" ng-submit="createBranch()" name="myForm">
+                                    <div class="col-md-6">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div id="map"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label>Name</label>
+                                                    <input class="form-control" type="text" ng-model="branch.Name" required>
+                                                </div>     
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label>Phone Number</label>
+                                                    <input class="form-control" type="text" ng-model="branch.PhoneNumber" placeholder="966xxxxxxxxx" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <button class="btn btn-warning" type="submit" id="submit" 
+                                                    ng-disabled="!branch.Name" ng-click="updateBranch()">Submit Changes</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </div>
+</div>
+    

@@ -1,0 +1,157 @@
+<style>
+    .form-group label {
+        margin-bottom: 5px;
+        font-weight: 700;
+    }
+
+    .datepicker i {
+        position: relative;
+        top: auto;
+        cursor: pointer;
+    }
+
+    .datepicker .caret {
+        float: right;
+        margin-top: 8px;
+        margin-right: -6px;
+    }
+
+    #filteredBanner {
+        background-color: #C79121;
+        color: #fff;
+        font-size: 12px;
+        font-family: 'Montserrat', sans-serif;
+        text-align: center;
+        width: 100%;
+        height:10px;
+    }
+
+    #filteredBanner span {
+        padding-left: 20px;
+    }
+
+    #filteredBanner #clearButton {
+        float: right;
+        padding-right: 10px;
+    }
+
+    #filteredBanner #clearButton:hover {
+        cursor: pointer;
+        color: #3276B1;
+    }
+
+    #allDataConsideredBanner {
+        background-color: #739E73;
+        color: #fff;
+        font-size: 12px;
+        font-family: 'Montserrat', sans-serif;
+        text-align: center;
+        width: 100%;
+        height: 15px;
+    }
+
+    .separatorAtTop {
+        padding-top: 10px;
+        border-top: 1px dashed rgba(0,0,0,.2);
+    }
+    .fixedWidth {
+        table-layout:fixed;
+    }
+    .fixedWidth th{
+        overflow: hidden;
+    }
+</style>
+
+<div id="allDataConsideredBanner" name="allDataConsideredBanner" ng-hide="isFiltered">All Items listed</div>
+
+<div id="content">
+
+    <div class="row">
+        <big-breadcrumbs items="['Items', 'Items List']" icon="file-text-o" class="col-xs-12 col-sm-7 col-md-7 col-lg-4"></big-breadcrumbs>
+        <div smart-include="app/statistics/views/items-data-topRightButtons.tpl.html"></div> 
+    </div>
+
+    <!-- widget grid -->
+    <section widget-grid id="widget-grid">
+        <!-- row -->
+        <div class="row">
+            <!-- NEW WIDGET START -->
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <!-- Widget ID (each widget will need unique ID)-->
+                <div id="sellings-list-widget" 
+                        data-widget-sortable 
+                        data-jarvis-widget 
+                        data-widget-deletebutton 
+                        data-widget-colorbutton 
+                        data-widget-editbutton 
+                        data-widget-togglebutton 
+                        data-widget-fullscreenbutton>
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+
+                        <h2>Items</h2>
+                    </header>
+                    <!-- widget div-->
+                    <div>
+                        <!-- widget content -->
+                        <div class="widget-body no-padding">
+
+                            <table datatable-basic data-table-options="tableOptions" bind-filters="false"
+                                   class="display projects-table table table-striped table-bordered table-hover fixedWidth"
+                                   cellspacing="0" width="100%">
+                                <thead>
+                                <tr>
+                                    <!-- The witdth style needs some changes -->
+                                    <th class="hasinput" style="width:17%">
+                                        <input type="text" class="form-control" placeholder="Name" />
+                                    </th>
+                                    <th class="hasinput" style="width:17%">
+                                        <input type="text" class="form-control" placeholder="Brand Name" />
+                                    </th>
+                                    <th class="hasinput" style="width:8%">
+                                        <input type="text" class="form-control" placeholder="Cost" />
+                                    </th>
+                                    <th class="hasinput" style="width:8%">
+                                        <input type="text" class="form-control" placeholder="Price" />
+                                    </th>
+                                    <th class="hasinput" style="width:8%">
+                                        <input type="text" class="form-control" placeholder="Viewing Count" />
+                                    </th>
+                                    <th class="hasinput" style="width:8%">
+                                        <input type="text" class="form-control" placeholder="Repeated Buys" />
+                                    </th>
+                                    <th class="hasinput" style="width:8%">
+                                        <input type="text" class="form-control" placeholder="Bought" />
+                                    </th>
+                                    <th class="hasinput" style="width:8%">
+                                        <input type="text" class="form-control" placeholder="Profit" />
+                                    </th>
+
+                                </tr>
+                                <tr>
+                                    <th data-hide="phone,tablet">Name</th>
+                                    <th data-hide="phone,tablet">Brand Name</th>
+                                    <th data-hide="phone,tablet">Cost</th>
+                                    <th data-hide="phone,tablet">Price</th>
+                                    <th data-hide="phone,tablet">Viewing Count</th>
+                                    <th data-hide="phone, tablet">Repeated Buys</th>
+                                    <th data-hide="phone, tablet">Bought</th>
+                                    <th data-hide="phone, tablet">Profit</th>
+
+                                </tr>
+                                </thead>
+                                
+                            </table>
+                        </div>
+                        <!-- end widget content -->
+                    </div>
+                    <!-- end widget div -->
+                </div>
+                <!-- end widget -->
+            </article>
+            <!-- WIDGET END -->
+        </div>
+        <!-- end row -->
+    </section>
+    <!-- end widget grid -->
+</div>

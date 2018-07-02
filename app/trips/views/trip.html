@@ -1,0 +1,143 @@
+<style>
+    #buttonsContainer {
+        text-align: center;
+    }
+    .form-group label {
+        max-width: 100%;
+        margin-bottom: 5px;
+        font-weight: 700;
+    }
+    #formWidgetContent {
+        padding: 13px 13px 0px 13px !important;
+    }
+</style>
+<div id="content">
+    <div class="row">
+        <big-breadcrumbs items="['Trips', 'View Trip']" icon="shopping-cart" class="col-xs-12 col-sm-7 col-md-7 col-lg-4"></big-breadcrumbs>
+    </div>
+    <div class="row">
+        <div class="col-md-10">
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div id="area-info-widget" 
+                data-widget-sortable 
+                data-jarvis-widget 
+                data-widget-deletebutton 
+                data-widget-colorbutton 
+                data-widget-editbutton 
+                data-widget-togglebutton 
+                data-widget-fullscreenbutton>
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-info"></i> </span>
+                        <h2>General Information</h2>
+                    </header>
+                    <div>
+                        <h5>Driver: {{driver.Name}}</h5>
+                        <h5>Car: {{car.Manufacturer + ' ' + car.ModelName + ' ' + car.ModelYear + ' (' + car.PlateNumber + ')'}}</h5>
+                        <h5>Started At: {{startedAt}}</h5>
+                        <h5>Ended At: {{endedAt}}</h5>
+                        <h5>Offering Count: {{offerings.length}}</h5>
+                        <h5>Delivered Order Count: {{deliveredOrdersCount}}</h5>
+                        <h5>Canceled Order Count: {{canceledOrdersCount}}</h5>
+                        <h5>Average Driver Rating: {{averageDriverRating}}</h5>
+                        <h5>Average Delivery Rating: {{averageDeliveryRating}}</h5>
+                        <button ng-show="!hasEnded" class="btn btn-danger pull-right" ng-click="endTrip()">End Trip</button>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+    <div class="row col-md-10">
+        <section widget-grid id="create-area-widget-grid">
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div id="area-info-widget" 
+                data-widget-sortable 
+                data-jarvis-widget 
+                data-widget-deletebutton 
+                data-widget-colorbutton 
+                data-widget-editbutton 
+                data-widget-togglebutton 
+                data-widget-fullscreenbutton>
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-info"></i> </span>
+                        <h2>Items</h2>
+                    </header>
+                    <div>                                
+                        <div class="widget-body no-padding" id="formWidgetContent">
+                            <div>
+                                <table width="100%" cellspacing="0"
+                                class="display projects-table table table-striped table-bordered table-hover">
+                                    <tr>
+                                        <th>Subcategory Name</th>
+                                        <th>Item Name</th>
+                                        <th>Suggested Count</th>
+                                        <th>Picked Up Count</th>
+                                        <th>View Count</th>
+                                        <th>Sold Count</th>
+                                        <th>Scrapped Count</th>
+                                        <th>Returned Count</th>
+                                    </tr>
+                                    <tr ng-repeat="tripItem in tripItems">
+                                        <td>{{tripItem.Item.Category.EnglishName}}</td>
+                                        <td>{{tripItem.Item.EnglishName}}</td>
+                                        <td>{{tripItem.SuggestedQuantity}}</td>
+                                        <td>{{tripItem.PickedUpQuantity}}</td>
+                                        <td>{{tripItem.ViewCount}}</td>
+                                        <td>{{tripItem.SoldQuantity}}</td>
+                                        <td>{{tripItem.ScrappedQuantity}}</td>
+                                        <td>{{tripItem.ReturnedQuantity}}</td>
+                                    </tr>
+                                </table>
+                            </div>                                      
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </section>
+    </div>
+    <div class="row col-md-10" style="margin-bottom:2%">
+        <section widget-grid id="create-area-widget-grid">
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div id="area-info-widget" 
+                data-widget-sortable 
+                data-jarvis-widget 
+                data-widget-deletebutton 
+                data-widget-colorbutton 
+                data-widget-editbutton 
+                data-widget-togglebutton 
+                data-widget-fullscreenbutton>
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-info"></i> </span>
+                        <h2>Offerings</h2>
+                    </header>
+                    <div>                                
+                        <div class="widget-body no-padding" id="formWidgetContent">
+                            <div>
+                                <table width="100%" cellspacing="0"
+                                class="display projects-table table table-striped table-bordered table-hover">
+                                    <tr>
+                                        <th>Areas</th>
+                                        <th>Started At</th>
+                                        <th>Ended At</th>
+                                        <th>Notification Sent Count</th>
+                                        <th>View Count</th>
+                                        <th>Delivered Order Count</th>
+                                        <th>Canceled Order Count</th>
+                                    </tr>
+                                    <tr ng-repeat="offering in offerings">
+                                        <td>{{offering.AreaNames}}</td>
+                                        <td>{{offering.StartedAt}}</td>
+                                        <td>{{offering.EndedAt}}</td>
+                                        <td>{{offering.NotificationSentCount}}</td>
+                                        <td>{{offering.ViewCount}}</td>
+                                        <td>{{offering.DeliveredCount}}</td>
+                                        <td>{{offering.CanceledCount}}</td>
+                                    </tr>
+                                </table>
+                            </div>                                      
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </section>
+    </div>
+</div>

@@ -1,0 +1,142 @@
+<style>
+	#backButtonContainer {
+		margin: 0px 0px 13px 0px;
+	}
+</style>
+
+<div id="content">
+<div class="row">
+    <big-breadcrumbs items="['Customers', 'Orders History']" icon="list-alt" class="col-xs-12 col-sm-7 col-md-7 col-lg-4"></big-breadcrumbs>
+</div>
+
+	<div class="row" id="backButtonContainer">
+		<a  class="btn btn-info" ng-click="backToAllCustomers()">
+	        <i class="fa fa-lg fa-fw fa-arrow-left"></i> Back to All Customers
+		</a>
+	</div>
+    <!-- widget grid -->
+    <section widget-grid id="widget-grid">
+        <!-- row -->
+        <div class="row">
+            <!-- NEW WIDGET START -->
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <!-- Widget ID (each widget will need unique ID)-->
+                <div id="orders-history-widget" 
+                        data-widget-sortable 
+                        data-jarvis-widget 
+                        data-widget-deletebutton 
+                        data-widget-colorbutton 
+                        data-widget-editbutton 
+                        data-widget-togglebutton 
+                        data-widget-fullscreenbutton>
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                        <h2>Orders</h2>
+                    </header>
+                    <!-- widget div-->
+                    <div>
+                        <!-- widget content -->
+                        <div class="widget-body no-padding">
+
+                            <table datatable-basic data-table-options="tableOptions" bind-filters="true"
+                                   class="display projects-table table table-striped table-bordered table-hover"
+                                   cellspacing="0" width="100%">
+                                <thead>
+                                <tr>
+                                    <th class="hasinput" style="width:3%">
+                                    </th>
+                                    <th class="hasinput icon-addon">
+                                        <input id="dateselect_filter" type="text" placeholder="Date Filter" class="form-control datepicker" data-dateformat="yy/mm/dd">
+                                        <label for="dateselect_filter" class="glyphicon glyphicon-calendar no-margin padding-top-15" rel="tooltip" title="" data-original-title="Purchase Date"></label>
+                                    </th>
+                                    <th class="hasinput">
+                                        <input type="text" class="form-control" placeholder="Customer Name Filter" />
+                                    </th>
+                                    <th class="hasinput" style="width:10%">
+                                        <input type="text" class="form-control" placeholder="Total Price Filter" />
+                                    </th>
+                                    <th class="hasinput" style="width:10%">
+                                        <input type="text" class="form-control" placeholder="Status Filter" />
+                                    </th>
+                                    <th class="hasinput" style="width:10%">
+                                        <input type="text" class="form-control" placeholder="Driver Eval. Filter" />
+                                    </th>
+                                    <th class="hasinput" style="width:10%">
+                                        <input type="text" class="form-control" placeholder="Speed Eval. Filter" />
+                                    </th>
+                                    <th class="hasinput" style="width:10%">
+                                        <input type="text" class="form-control" placeholder="Time To Arrival" />
+                                    </th>
+                                    <th class="hasinput" style="width:10%">
+                                        <input type="text" class="form-control" placeholder="Total Delivery Time" />
+                                    </th>
+
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <th data-class="expand">Date</th>
+                                    <th>Customer Name</th>
+                                    <th data-hide="phone,tablet">Total Price</th>
+                                    <th data-hide="phone,tablet">Status</th>
+                                    <th data-hide="phone, tablet">Driver Eval.</th>
+                                    <th data-hide="phone, tablet">Speed Eval.</th>
+                                    <th>Time To Arrival</th>
+                                    <th>Total Delivery Time</th>
+                                </tr>
+                                </thead>
+                                <caption class="smart-datatable-child-format" data-child-control="td.details-control">
+                                    <table cellpadding="5" cellspacing="0" border="0"
+                                           class="table table-hover table-condensed">
+                                        <tr>
+                                            <td style="width:122px">Driver:</td>
+                                            <td ng-bind-html="d.DriverName"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Customer Phone:</td>
+                                            <td ng-bind-html="d.CustomerPhoneNumber"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Customer Comment:</td>
+                                            <td>{{d.CustomerReview ? d.CustomerReview : "no comment"}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Order -> Navigation:</td>
+                                            <td><div ng-hide="d.toNavigateTime < 60" style="display: inline;">{{(d.SecondsFromOrderTillNavigated/60 | number:0) + "m "}}</div>{{(d.SecondsFromOrderTillNavigated%60) + "s"}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Navigation -> Arrival:</td>
+                                            <td><div ng-hide="d.SecondsFromNavigationTillArrival < 60" style="display: inline;">{{(d.SecondsFromNavigationTillArrival/60 | number:0) + "m "}}</div>{{(d.SecondsFromNavigationTillArrival%60) + "s"}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Arrival -> Delivery:</td>
+                                            <td><div ng-hide="d.SecondsFromArrivalToDelivery < 60" style="display: inline;">{{(d.SecondsFromArrivalToDelivery/60 | number:0) + "m "}}</div>{{(d.SecondsFromArrivalToDelivery%60) + "s"}}</td>
+                                        </tr>
+                                        <tr class="panel-group">
+                                            <div class="panel panel-default">
+                                                <td>
+                                                    <a data-toggle="collapse" ng-href="{{'#collapse' + d.ID}}" class="btn btn-info">
+                                                        <i class="glyphicon glyphicon-list"></i> Items
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <order-items order-id="d.ID" items-list="d.OrderItems"></order-items>
+                                                </td>
+                                            </div>
+                                        </tr>
+                                    </table>
+                                </caption>
+                            </table>
+                        </div>
+                        <!-- end widget content -->
+                    </div>
+                    <!-- end widget div -->
+                </div>
+                <!-- end widget -->
+            </article>
+            <!-- WIDGET END -->
+        </div>
+        <!-- end row -->
+    </section>
+    <!-- end widget grid -->
+</div>
+	
